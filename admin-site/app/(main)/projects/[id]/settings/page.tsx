@@ -2,6 +2,7 @@ import { requireProjectMember } from "@/api/utils/requireProjectMember";
 
 import ProjectApiKey from "./ProjectApiKey";
 import ProjectDangerButton from "./ProjectDangerButton";
+import ProjectName from "./ProjectName";
 
 type Props = {
   params: {
@@ -18,6 +19,8 @@ const ProjectSettingsPage = async ({ params }: Props) => {
     <div>
       <div className="flex flex-col gap-4 items-start">
         <h2 className="font-bold text-lg">General</h2>
+
+        <ProjectName project={project} />
       </div>
 
       <div className="divider" />

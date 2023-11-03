@@ -1,7 +1,7 @@
 "use client";
 
 import type { FC } from "react";
-import React, { useTransition } from "react";
+import { useTransition } from "react";
 import { LuClipboard, LuClipboardCheck } from "react-icons/lu";
 
 import { useUser } from "@clerk/nextjs";

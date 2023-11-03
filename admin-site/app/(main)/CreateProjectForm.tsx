@@ -1,6 +1,8 @@
 import type { FC } from "react";
-import React, { useTransition } from "react";
+import { useTransition } from "react";
 import { Controller, useForm } from "react-hook-form";
+
+import { ErrorMessage } from "@hookform/error-message";
 
 import { createProject } from "@/api/projects/createProject";
 import LanguageSelector from "@/components/LanguageSelector";
@@ -57,12 +59,16 @@ const CreateProjectForm: FC<Props> = ({ onClose }) => {
           type="text"
           placeholder="Name..."
           className="input input-bordered w-full max-w-xs placeholder:text-base-content"
-          {...register("name", { required: true })}
+          {...register("name", { required: "Name is required" })}
         />
 
-        {errors.name && (
-          <span className="text-xs text-error">{errors.name.message}</span>
-        )}
+        <ErrorMessage
+          errors={errors}
+          name="name"
+          render={({ message }) => (
+            <span className="text-xs text-error">{message}</span>
+          )}
+        />
       </label>
 
       <label className="flex flex-col gap-1">
@@ -71,17 +77,19 @@ const CreateProjectForm: FC<Props> = ({ onClose }) => {
         <Controller
           control={control}
           name="defaultLanguage"
-          rules={{ required: true }}
+          rules={{ required: "Default language is required" }}
           render={({ field: { onChange, value } }) => (
             <LanguageSelector value={value} onChange={onChange} />
           )}
         />
 
-        {errors.defaultLanguage && (
-          <span className="text-xs text-error">
-            {errors.defaultLanguage.message}
-          </span>
-        )}
+        <ErrorMessage
+          errors={errors}
+          name="defaultLanguage"
+          render={({ message }) => (
+            <span className="text-xs text-error">{message}</span>
+          )}
+        />
       </label>
 
       <div className="modal-action justify-between">
