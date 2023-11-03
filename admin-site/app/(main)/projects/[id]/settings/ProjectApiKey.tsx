@@ -11,10 +11,10 @@ import { generateApiKey } from "@/api/projects/generateApiKey";
 
 type Props = {
   project: Project;
-  userId: string;
+  readonly: boolean;
 };
 
-const ProjectApiKey: FC<Props> = ({ project, userId }) => {
+const ProjectApiKey: FC<Props> = ({ project, readonly }) => {
   const [value, copy] = useCopyToClipboard();
 
   const [isPending, startTransition] = useTransition();
@@ -62,18 +62,20 @@ const ProjectApiKey: FC<Props> = ({ project, userId }) => {
         )}
       </button>
 
-      <button
-        type="button"
-        className="btn btn-outline"
-        onClick={onGenerate}
-        disabled={isPending || project.ownerId !== userId}
-      >
-        {isPending ? (
-          <span className="loading loading-spinner loading-sm" />
-        ) : (
-          <> {project.apiKey ? "Regenerate" : "Generate"}</>
-        )}
-      </button>
+      {!readonly && (
+        <button
+          type="button"
+          className="btn btn-outline"
+          onClick={onGenerate}
+          disabled={isPending}
+        >
+          {isPending ? (
+            <span className="loading loading-spinner loading-sm" />
+          ) : (
+            <> {project.apiKey ? "Regenerate" : "Generate"}</>
+          )}
+        </button>
+      )}
     </div>
   );
 };

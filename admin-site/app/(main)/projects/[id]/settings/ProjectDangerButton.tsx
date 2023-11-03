@@ -8,17 +8,17 @@ import type { Project } from "@prisma/client";
 import { deleteProject } from "@/app/api/projects/deleteProject";
 import { leaveProject } from "@/app/api/projects/leaveProject";
 
-const modalId = "project-danger-modal";
-
 type Props = {
   project: Project;
-  userId: string;
+  readonly: boolean;
 };
 
-const ProjectDangerButton: FC<Props> = ({ project, userId }) => {
+const ProjectDangerButton: FC<Props> = ({ project, readonly }) => {
+  const modalId = `project-danger-modal-${project.id}`;
+
   const [isPending, startTransition] = useTransition();
 
-  const type = project.ownerId === userId ? "delete" : "leave";
+  const type = readonly ? "leave" : "delete";
 
   const onOpen = () => {
     const modal = document.getElementById(modalId);

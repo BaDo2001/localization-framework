@@ -41,7 +41,6 @@ const CustomOption: FC<CustomOptionProps> = ({
     <Image
       src={data.flag}
       alt={data.label}
-      className="flag-icon"
       width={32}
       height={32}
       style={{
@@ -61,7 +60,6 @@ const CustomSingleValue: FC<CustomSingleValueProps> = ({ data }) => (
     <Image
       src={data.flag}
       alt={data.label}
-      className="flag-icon"
       width={32}
       height={32}
       style={{

@@ -33,6 +33,7 @@ export const requireProjectMember = async (
       ...(includeMembers && {
         members: true,
       }),
+      translations: true,
     },
   });
 

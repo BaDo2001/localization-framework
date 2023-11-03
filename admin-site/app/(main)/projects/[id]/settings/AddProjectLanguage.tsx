@@ -1,47 +1,41 @@
 "use client";
 
 import { useTransition } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 import { ErrorMessage } from "@hookform/error-message";
-import { zodResolver } from "@hookform/resolvers/zod";
 import type { Project } from "@prisma/client";
-import * as z from "zod";
 
-import { addMember } from "@/app/api/projects/addMember";
+import { addLanguage } from "@/app/api/projects/addLanguage";
+import LanguageSelector from "@/components/LanguageSelector";
 
 type Props = {
   project: Project;
 };
 
-const FormSchema = z.object({
-  email: z.string().email(),
-});
+type Form = {
+  language: string;
+};
 
-type Form = z.infer<typeof FormSchema>;
-
-const AddProjectMember: React.FC<Props> = ({ project }) => {
+const AddProjectLanguage: React.FC<Props> = ({ project }) => {
   const {
     handleSubmit,
-    register,
+    control,
     formState: { errors, isDirty, isValid },
     setError,
     reset,
-  } = useForm<Form>({
-    resolver: zodResolver(FormSchema),
-    mode: "onChange",
-  });
+  } = useForm<Form>();
 
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = handleSubmit((data) => {
     startTransition(async () => {
       try {
-        await addMember(project.id, data.email);
+        await addLanguage(project.id, data.language);
         reset();
       } catch (error) {
         if (error instanceof Error) {
-          setError("email", {
+          setError("language", {
             type: "custom",
             message: error.message,
           });
@@ -52,13 +46,15 @@ const AddProjectMember: React.FC<Props> = ({ project }) => {
   return (
     <form onSubmit={onSubmit}>
       <div className="flex gap-8">
-        <input
-          type="email"
-          placeholder="Email..."
-          className="input input-bordered w-80 placeholder:text-base-content"
-          {...register("email", { required: "Email is required" })}
+        <Controller
+          control={control}
+          name="language"
+          render={({ field: { onChange, value } }) => (
+            <div className="w-80">
+              <LanguageSelector value={value} onChange={onChange} />
+            </div>
+          )}
         />
-
         <button
           type="submit"
           className="btn btn-primary"
@@ -74,17 +70,13 @@ const AddProjectMember: React.FC<Props> = ({ project }) => {
 
       <ErrorMessage
         errors={errors}
-        name="email"
+        name="language"
         render={({ message }) => (
-          <>
-            {message !== "Invalid email" && (
-              <span className="text-xs text-error">{message}</span>
-            )}
-          </>
+          <span className="text-xs text-error">{message}</span>
         )}
       />
     </form>
   );
 };
 
-export default AddProjectMember;
+export default AddProjectLanguage;

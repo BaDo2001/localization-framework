@@ -11,14 +11,14 @@ import { updateName } from "@/app/api/projects/updateName";
 
 type Props = {
   project: Project;
-  userId: string;
+  readonly: boolean;
 };
 
 type Form = {
   name: string;
 };
 
-const ProjectName: FC<Props> = ({ project, userId }) => {
+const ProjectName: FC<Props> = ({ project, readonly }) => {
   const {
     handleSubmit,
     register,
@@ -63,10 +63,10 @@ const ProjectName: FC<Props> = ({ project, userId }) => {
             placeholder="Name..."
             className="input input-bordered w-80 placeholder:text-base-content read-only:outline-none"
             {...register("name", { required: "Name is required" })}
-            readOnly={project.ownerId !== userId}
+            readOnly={readonly}
           />
 
-          {project.ownerId === userId && (
+          {!readonly && (
             <button
               type="submit"
               className="btn btn-primary"

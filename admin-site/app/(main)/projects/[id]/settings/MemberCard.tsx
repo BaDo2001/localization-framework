@@ -5,15 +5,21 @@ import { LuX } from "react-icons/lu";
 
 import { removeMember } from "@/app/api/projects/removeMember";
 
-const modalId = "remove-member-modal";
-
 type Props = {
   projectId: string;
   memberId: string;
   email: string;
+  readonly: boolean;
 };
 
-const MemberCard: React.FC<Props> = ({ projectId, memberId, email }) => {
+const MemberCard: React.FC<Props> = ({
+  projectId,
+  memberId,
+  email,
+  readonly,
+}) => {
+  const modalId = `remove-member-modal-${memberId}`;
+
   const onOpen = () => {
     const modal = document.getElementById(modalId);
     modal?.showModal?.();
@@ -41,9 +47,11 @@ const MemberCard: React.FC<Props> = ({ projectId, memberId, email }) => {
       <div className="flex justify-between items-center gap-8 w-full px-4 py-2 bg-base-100 rounded-xl">
         <p>{email}</p>
 
-        <button type="button" onClick={onOpen}>
-          <LuX className="w-8 h-8 p-1 bg-error text-error-content rounded-full" />
-        </button>
+        {!readonly && (
+          <button type="button" onClick={onOpen}>
+            <LuX className="w-8 h-8 p-1 bg-error text-error-content rounded-full" />
+          </button>
+        )}
       </div>
 
       <dialog id={modalId} className="modal">
