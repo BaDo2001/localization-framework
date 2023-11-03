@@ -9,7 +9,20 @@ datasource db {
 }
 
 model Project {
-  id      Int    @id @default(autoincrement())
-  name    String
-  ownerId String
+  id              Int    @id @default(autoincrement())
+  name            String @unique
+  ownerId         String
+  defaultLanguage String
+
+  translations Translation[] @relation()
+}
+
+model Translation {
+  id        Int    @id @default(autoincrement())
+  projectId Int
+  language  String
+
+  project Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, language])
 }
