@@ -1,31 +1,34 @@
 import type { FC } from "react";
 import { useTransition } from "react";
-import { useController, useForm } from "react-hook-form";
+import type { UseFormReturn } from "react-hook-form";
+import { useController } from "react-hook-form";
 
 import { ErrorMessage } from "@hookform/error-message";
 
 import { createProject } from "@/api/projects/createProject";
 import LanguageSelector from "@/components/LanguageSelector";
 
-type Props = {
-  onClose: () => void;
-};
-
-type Form = {
+export type Form = {
   name: string;
   defaultLanguage: string;
 };
 
-const CreateProjectForm: FC<Props> = ({ onClose }) => {
-  const {
+type Props = {
+  onClose: () => void;
+  form: UseFormReturn<Form>;
+};
+
+const CreateProjectForm: FC<Props> = ({
+  onClose,
+  form: {
     handleSubmit,
     register,
     reset,
     formState: { errors },
     setError,
     control,
-  } = useForm<Form>();
-
+  },
+}) => {
   const { field } = useController({
     name: "defaultLanguage",
     control,

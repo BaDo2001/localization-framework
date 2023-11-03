@@ -47,7 +47,7 @@ const Dialog: React.FC<Props> = ({
       )}
     </div>
 
-    <form method="dialog" className="modal-backdrop">
+    <form method="dialog" className="modal-backdrop" onSubmit={onClose}>
       <button type="submit">close</button>
     </form>
   </dialog>
