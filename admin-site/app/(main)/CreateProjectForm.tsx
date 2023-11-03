@@ -29,6 +29,7 @@ const CreateProjectForm: FC<Props> = ({ onClose }) => {
   const { field } = useController({
     name: "defaultLanguage",
     control,
+    rules: { required: "Default language is required" },
   });
 
   const [isPending, startTransition] = useTransition();

@@ -20,6 +20,7 @@ type SelectOption = {
 type Props = {
   value: string | null | string[];
   onChange: (value: string | null | string[]) => void;
+  keysToExclude?: string[];
 };
 
 type CustomOptionProps = OptionProps<SelectOption>;
@@ -69,18 +70,23 @@ const CustomSingleValue: FC<CustomSingleValueProps> = ({ data }) => (
   </div>
 );
 
-const LanguageSelector: FC<Props> = ({ value, onChange }) => {
+const LanguageSelector: FC<Props> = ({
+  value,
+  onChange,
+  keysToExclude = [],
+}) => {
   const options: SelectOption[] = useMemo(() => {
     const keys = Object.keys(locales) as LocaleKey[];
 
     return keys
+      .filter((key) => !keysToExclude.includes(key))
       .map((key) => ({
         value: key,
         label: locales[key].name,
         flag: locales[key].flag,
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
-  }, []);
+  }, [keysToExclude]);
 
   const handleChange = (newValue: SingleValue<SelectOption>) => {
     onChange(newValue?.value ?? null);

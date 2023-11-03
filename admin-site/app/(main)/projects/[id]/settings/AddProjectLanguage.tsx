@@ -4,13 +4,15 @@ import { useTransition } from "react";
 import { useController, useForm } from "react-hook-form";
 
 import { ErrorMessage } from "@hookform/error-message";
-import type { Project } from "@prisma/client";
+import type { Project, Translation } from "@prisma/client";
 
 import { addLanguage } from "@/app/api/projects/addLanguage";
 import LanguageSelector from "@/components/LanguageSelector";
 
 type Props = {
-  project: Project;
+  project: Project & {
+    translations: Translation[];
+  };
 };
 
 type Form = {
@@ -52,7 +54,11 @@ const AddProjectLanguage: React.FC<Props> = ({ project }) => {
     <form onSubmit={onSubmit}>
       <div className="flex gap-8">
         <div className="w-80">
-          <LanguageSelector value={field.value} onChange={field.onChange} />
+          <LanguageSelector
+            value={field.value}
+            onChange={field.onChange}
+            keysToExclude={project.translations.map((t) => t.language)}
+          />
         </div>
 
         <button
