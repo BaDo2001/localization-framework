@@ -1,7 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useController, useForm } from "react-hook-form";
 
 import { ErrorMessage } from "@hookform/error-message";
 import type { Project } from "@prisma/client";
@@ -26,6 +26,11 @@ const AddProjectLanguage: React.FC<Props> = ({ project }) => {
     reset,
   } = useForm<Form>();
 
+  const { field } = useController({
+    name: "language",
+    control,
+  });
+
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = handleSubmit((data) => {
@@ -46,15 +51,10 @@ const AddProjectLanguage: React.FC<Props> = ({ project }) => {
   return (
     <form onSubmit={onSubmit}>
       <div className="flex gap-8">
-        <Controller
-          control={control}
-          name="language"
-          render={({ field: { onChange, value } }) => (
-            <div className="w-80">
-              <LanguageSelector value={value} onChange={onChange} />
-            </div>
-          )}
-        />
+        <div className="w-80">
+          <LanguageSelector value={field.value} onChange={field.onChange} />
+        </div>
+
         <button
           type="submit"
           className="btn btn-primary"

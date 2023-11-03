@@ -3,15 +3,13 @@
 import type { FC } from "react";
 import { useMemo } from "react";
 import type { OptionProps, SingleValue, SingleValueProps } from "react-select";
+import Select from "react-select";
 
 import clsx from "clsx";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 
 import type { LocaleKey } from "@/lib/locales";
 import { locales } from "@/lib/locales";
-
-const Select = dynamic(() => import("react-select"), { ssr: false });
 
 type SelectOption = {
   value: string;

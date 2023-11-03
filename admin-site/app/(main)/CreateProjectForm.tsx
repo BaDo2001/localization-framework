@@ -1,6 +1,6 @@
 import type { FC } from "react";
 import { useTransition } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useController, useForm } from "react-hook-form";
 
 import { ErrorMessage } from "@hookform/error-message";
 
@@ -25,6 +25,11 @@ const CreateProjectForm: FC<Props> = ({ onClose }) => {
     setError,
     control,
   } = useForm<Form>();
+
+  const { field } = useController({
+    name: "defaultLanguage",
+    control,
+  });
 
   const [isPending, startTransition] = useTransition();
 
@@ -74,14 +79,7 @@ const CreateProjectForm: FC<Props> = ({ onClose }) => {
       <label className="flex flex-col gap-1">
         <span className="label">Default language</span>
 
-        <Controller
-          control={control}
-          name="defaultLanguage"
-          rules={{ required: "Default language is required" }}
-          render={({ field: { onChange, value } }) => (
-            <LanguageSelector value={value} onChange={onChange} />
-          )}
-        />
+        <LanguageSelector value={field.value} onChange={field.onChange} />
 
         <ErrorMessage
           errors={errors}
