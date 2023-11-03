@@ -4,6 +4,8 @@ import { useTransition } from "react";
 import { LuX } from "react-icons/lu";
 
 import { removeMember } from "@/app/api/projects/removeMember";
+import Dialog from "@/components/Dialog";
+import { useDialog } from "@/hooks/useDialog";
 
 type Props = {
   projectId: string;
@@ -20,15 +22,7 @@ const MemberCard: React.FC<Props> = ({
 }) => {
   const modalId = `remove-member-modal-${memberId}`;
 
-  const onOpen = () => {
-    const modal = document.getElementById(modalId);
-    modal?.showModal?.();
-  };
-
-  const onClose = () => {
-    const modal = document.getElementById(modalId);
-    modal?.close?.();
-  };
+  const { onOpen, onClose } = useDialog(modalId);
 
   const [isPending, startTransition] = useTransition();
 
@@ -54,47 +48,20 @@ const MemberCard: React.FC<Props> = ({
         )}
       </div>
 
-      <dialog id={modalId} className="modal">
-        <div className="modal-box overflow-visible">
-          <h3 className="font-bold text-lg mb-4">
-            Are you sure you want to remove this member?
-          </h3>
+      <Dialog
+        id={modalId}
+        isPending={isPending}
+        onAction={onRemove}
+        onClose={onClose}
+      >
+        <h3 className="font-bold text-lg mb-4">
+          Are you sure you want to remove this member?
+        </h3>
 
-          <p>
-            This will remove <strong>{email}</strong> from this project.
-          </p>
-
-          <div className="modal-action">
-            <form method="dialog" className="flex gap-4">
-              <button
-                className="btn btn-outline"
-                type="button"
-                onClick={onClose}
-                disabled={isPending}
-              >
-                No, keep
-              </button>
-
-              <button
-                className="btn btn-error"
-                type="button"
-                onClick={onRemove}
-                disabled={isPending}
-              >
-                {isPending ? (
-                  <span className="loading loading-spinner loading-sm" />
-                ) : (
-                  <>Yes, remove</>
-                )}
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <form method="dialog" className="modal-backdrop">
-          <button type="submit">close</button>
-        </form>
-      </dialog>
+        <p>
+          This will remove <strong>{email}</strong> from this project.
+        </p>
+      </Dialog>
     </>
   );
 };

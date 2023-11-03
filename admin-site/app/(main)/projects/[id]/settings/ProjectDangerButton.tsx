@@ -7,6 +7,8 @@ import type { Project } from "@prisma/client";
 
 import { deleteProject } from "@/app/api/projects/deleteProject";
 import { leaveProject } from "@/app/api/projects/leaveProject";
+import Dialog from "@/components/Dialog";
+import { useDialog } from "@/hooks/useDialog";
 
 type Props = {
   project: Project;
@@ -20,15 +22,7 @@ const ProjectDangerButton: FC<Props> = ({ project, readonly }) => {
 
   const type = readonly ? "leave" : "delete";
 
-  const onOpen = () => {
-    const modal = document.getElementById(modalId);
-    modal?.showModal?.();
-  };
-
-  const onClose = () => {
-    const modal = document.getElementById(modalId);
-    modal?.close?.();
-  };
+  const { onOpen, onClose } = useDialog(modalId);
 
   const onAction = () => {
     startTransition(async () => {
@@ -50,43 +44,23 @@ const ProjectDangerButton: FC<Props> = ({ project, readonly }) => {
         {type === "delete" ? "Delete project" : "Leave project"}
       </button>
 
-      <dialog id={modalId} className="modal">
-        <div className="modal-box overflow-visible">
-          <h3 className="font-bold text-lg mb-4">
-            Are you sure you want to {type} this project?
-          </h3>
+      <Dialog
+        id={modalId}
+        isPending={isPending}
+        onAction={onAction}
+        onClose={onClose}
+      >
+        <h3 className="font-bold text-lg mb-4">
+          Are you sure you want to {type} this project?
+        </h3>
 
-          <div className="modal-action">
-            <form method="dialog" className="flex gap-4">
-              <button
-                className="btn btn-outline"
-                type="button"
-                onClick={onClose}
-                disabled={isPending}
-              >
-                {type === "delete" ? "No, keep it" : "No, stay"}
-              </button>
-
-              <button
-                className="btn btn-error"
-                type="button"
-                onClick={onAction}
-                disabled={isPending}
-              >
-                {isPending ? (
-                  <span className="loading loading-spinner loading-sm" />
-                ) : (
-                  <>{type === "delete" ? "Yes, delete it" : "Yes, leave"}</>
-                )}
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <form method="dialog" className="modal-backdrop">
-          <button type="submit">close</button>
-        </form>
-      </dialog>
+        <p>
+          This action is irreversible.{" "}
+          {type === "delete"
+            ? " All project data will be permanently deleted."
+            : "You will no longer have access to this project."}
+        </p>
+      </Dialog>
     </>
   );
 };

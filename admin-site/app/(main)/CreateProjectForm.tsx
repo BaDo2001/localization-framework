@@ -92,7 +92,7 @@ const CreateProjectForm: FC<Props> = ({ onClose }) => {
         />
       </label>
 
-      <div className="modal-action justify-between">
+      <div className="modal-action justify-end">
         <button
           className="btn"
           type="button"
@@ -106,7 +106,7 @@ const CreateProjectForm: FC<Props> = ({ onClose }) => {
           {isPending ? (
             <span className="loading loading-spinner loading-sm" />
           ) : (
-            "Submit"
+            "Create"
           )}
         </button>
       </div>

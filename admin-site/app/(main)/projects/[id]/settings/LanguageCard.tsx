@@ -7,6 +7,8 @@ import type { Translation } from "@prisma/client";
 import Image from "next/image";
 
 import { removeLanguage } from "@/app/api/projects/removeLanguage";
+import Dialog from "@/components/Dialog";
+import { useDialog } from "@/hooks/useDialog";
 import { isLocaleKey, locales } from "@/lib/locales";
 
 type Props = {
@@ -28,19 +30,11 @@ const LanguageCard: React.FC<Props> = ({
 
   const languageKey = translation.language;
 
+  const { onOpen, onClose } = useDialog(modalId);
+
   if (!isLocaleKey(languageKey)) {
     return null;
   }
-
-  const onOpen = () => {
-    const modal = document.getElementById(modalId);
-    modal?.showModal?.();
-  };
-
-  const onClose = () => {
-    const modal = document.getElementById(modalId);
-    modal?.close?.();
-  };
 
   const onRemove = () => {
     startTransition(async () => {
@@ -84,48 +78,21 @@ const LanguageCard: React.FC<Props> = ({
         )}
       </div>
 
-      <dialog id={modalId} className="modal">
-        <div className="modal-box overflow-visible">
-          <h3 className="font-bold text-lg mb-4">
-            Are you sure you want to remove this language?
-          </h3>
+      <Dialog
+        id={modalId}
+        onClose={onClose}
+        onAction={onRemove}
+        isPending={isPending}
+      >
+        <h3 className="font-bold text-lg mb-4">
+          Are you sure you want to remove this language?
+        </h3>
 
-          <p>
-            This will remove <strong>{localeInfo.name}</strong> from this
-            project.
-          </p>
-
-          <div className="modal-action">
-            <form method="dialog" className="flex gap-4">
-              <button
-                className="btn btn-outline"
-                type="button"
-                onClick={onClose}
-                disabled={isPending}
-              >
-                No, keep it
-              </button>
-
-              <button
-                className="btn btn-error"
-                type="button"
-                onClick={onRemove}
-                disabled={isPending}
-              >
-                {isPending ? (
-                  <span className="loading loading-spinner loading-sm" />
-                ) : (
-                  <>Yes, remove it</>
-                )}
-              </button>
-            </form>
-          </div>
-        </div>
-
-        <form method="dialog" className="modal-backdrop">
-          <button type="submit">close</button>
-        </form>
-      </dialog>
+        <p>
+          This will remove the <strong>{localeInfo.name}</strong> language from
+          this project.
+        </p>
+      </Dialog>
     </>
   );
 };
