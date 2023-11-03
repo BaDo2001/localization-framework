@@ -12,6 +12,8 @@ const Projects = async () => {
     return null;
   }
 
+  // TODO: Include projects where user is a member
+
   const projects = await prisma.project.findMany({
     where: {
       ownerId: userId,

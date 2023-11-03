@@ -9,12 +9,22 @@ datasource db {
 }
 
 model Project {
-  id              Int    @id @default(autoincrement())
-  name            String @unique
+  id              Int     @id @default(autoincrement())
+  name            String  @unique
   ownerId         String
   defaultLanguage String
+  apiKey          String?
 
   translations Translation[] @relation()
+  members      Member[]
+}
+
+model Member {
+  id        Int    @id @default(autoincrement())
+  projectId Int
+  userId    String
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Translation {
@@ -22,7 +32,7 @@ model Translation {
   projectId Int
   language  String
 
-  project Project? @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@unique([projectId, language])
 }
