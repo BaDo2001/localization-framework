@@ -1,5 +1,7 @@
 import type { FC, PropsWithChildren } from "react";
 
+import { ClerkProvider } from "@clerk/nextjs";
+import clsx from "clsx";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 
@@ -12,9 +14,11 @@ export const metadata: Metadata = {
 };
 
 const RootLayout: FC<PropsWithChildren> = ({ children }) => (
-  <html lang="en">
-    <body className={inter.className}>{children}</body>
-  </html>
+  <ClerkProvider>
+    <html lang="en">
+      <body className={clsx(inter.className, "h-screen")}>{children}</body>
+    </html>
+  </ClerkProvider>
 );
 
 export default RootLayout;
