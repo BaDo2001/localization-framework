@@ -16,7 +16,9 @@ export const metadata: Metadata = {
 const RootLayout: FC<PropsWithChildren> = ({ children }) => (
   <ClerkProvider>
     <html lang="en">
-      <body className={clsx(inter.className, "h-screen")}>{children}</body>
+      <body className={clsx(inter.className, "h-screen bg-base-300")}>
+        {children}
+      </body>
     </html>
   </ClerkProvider>
 );
