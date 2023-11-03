@@ -1,4 +1,4 @@
-import { requireProjectMember } from "@/app/api/utils/requireProjectMember";
+import { requireProjectMember } from "@/api/utils/requireProjectMember";
 
 type Props = {
   params: {

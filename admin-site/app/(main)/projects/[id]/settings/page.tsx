@@ -1,4 +1,7 @@
-import { requireProjectMember } from "@/app/api/utils/requireProjectMember";
+import { requireProjectMember } from "@/api/utils/requireProjectMember";
+
+import ProjectApiKey from "./ProjectApiKey";
+import ProjectDangerButton from "./ProjectDangerButton";
 
 type Props = {
   params: {
@@ -13,9 +16,37 @@ const ProjectSettingsPage = async ({ params }: Props) => {
 
   return (
     <div>
-      <h1>Project settings Page</h1>
+      <div className="flex flex-col gap-4 items-start">
+        <h2 className="font-bold text-lg">General</h2>
+      </div>
 
-      {project?.name}
+      <div className="divider" />
+
+      <div className="flex flex-col gap-4 items-start">
+        <h2 className="font-bold text-lg">Languages</h2>
+      </div>
+
+      <div className="divider" />
+
+      <div className="flex flex-col gap-4 items-start">
+        <h2 className="font-bold text-lg">Members</h2>
+      </div>
+
+      <div className="divider" />
+
+      <div className="flex flex-col gap-4 items-start">
+        <h2 className="font-bold text-lg">Keys</h2>
+
+        <ProjectApiKey project={project} />
+      </div>
+
+      <div className="divider" />
+
+      <div className="flex flex-col gap-4 items-start">
+        <h2 className="font-bold text-lg text-error">Danger zone</h2>
+
+        <ProjectDangerButton project={project} />
+      </div>
     </div>
   );
 };

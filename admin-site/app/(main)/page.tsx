@@ -17,6 +17,12 @@ const Projects = async () => {
         {projects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
+
+        {projects.length === 0 && (
+          <p className="text-center w-full">
+            You don&apos;t have any projects yet.
+          </p>
+        )}
       </ul>
     </div>
   );

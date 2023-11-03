@@ -2,6 +2,7 @@
 
 import { auth } from "@clerk/nextjs";
 import { revalidatePath } from "next/cache";
+import { redirect, RedirectType } from "next/navigation";
 
 import prisma from "@/lib/prisma";
 
@@ -20,4 +21,6 @@ export const leaveProject = async (projectId: number) => {
   });
 
   revalidatePath("/");
+
+  redirect("/", RedirectType.replace);
 };
