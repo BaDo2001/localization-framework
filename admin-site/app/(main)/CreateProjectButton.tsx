@@ -1,25 +1,22 @@
 "use client";
 
+import { useForm } from "react-hook-form";
+
+import Dialog from "@/components/Dialog";
+import { useDialog } from "@/hooks/useDialog";
+
+import type { Form } from "./CreateProjectForm";
 import CreateProjectForm from "./CreateProjectForm";
 
 const modalId = "create-project-modal";
 
-declare global {
-  interface HTMLElement {
-    showModal?: () => void;
-    close?: () => void;
-  }
-}
-
 const CreateProjectButton = () => {
-  const onOpen = () => {
-    const modal = document.getElementById(modalId);
-    modal?.showModal?.();
-  };
+  const { onOpen, onClose } = useDialog(modalId);
 
-  const onClose = () => {
-    const modal = document.getElementById(modalId);
-    modal?.close?.();
+  const form = useForm<Form>();
+
+  const handleClose = () => {
+    form.reset();
   };
 
   return (
@@ -28,17 +25,11 @@ const CreateProjectButton = () => {
         Create project
       </button>
 
-      <dialog id={modalId} className="modal">
-        <div className="modal-box overflow-visible">
-          <h3 className="font-bold text-lg mb-4">Create new project</h3>
+      <Dialog id={modalId} onClose={handleClose}>
+        <h3 className="font-bold text-lg mb-4">Create new project</h3>
 
-          <CreateProjectForm onClose={onClose} />
-        </div>
-
-        <form method="dialog" className="modal-backdrop">
-          <button type="submit">close</button>
-        </form>
-      </dialog>
+        <CreateProjectForm onClose={onClose} form={form} />
+      </Dialog>
     </>
   );
 };

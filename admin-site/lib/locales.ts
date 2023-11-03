@@ -287,3 +287,6 @@ export const locales = {
 };
 
 export type LocaleKey = keyof typeof locales;
+
+export const isLocaleKey = (key: string): key is LocaleKey =>
+  Object.keys(locales).includes(key);

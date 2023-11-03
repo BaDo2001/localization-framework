@@ -3,15 +3,13 @@
 import type { FC } from "react";
 import { useMemo } from "react";
 import type { OptionProps, SingleValue, SingleValueProps } from "react-select";
+import Select from "react-select";
 
 import clsx from "clsx";
-import dynamic from "next/dynamic";
 import Image from "next/image";
 
 import type { LocaleKey } from "@/lib/locales";
 import { locales } from "@/lib/locales";
-
-const Select = dynamic(() => import("react-select"), { ssr: false });
 
 type SelectOption = {
   value: string;
@@ -22,6 +20,7 @@ type SelectOption = {
 type Props = {
   value: string | null | string[];
   onChange: (value: string | null | string[]) => void;
+  keysToExclude?: string[];
 };
 
 type CustomOptionProps = OptionProps<SelectOption>;
@@ -41,7 +40,6 @@ const CustomOption: FC<CustomOptionProps> = ({
     <Image
       src={data.flag}
       alt={data.label}
-      className="flag-icon"
       width={32}
       height={32}
       style={{
@@ -61,7 +59,6 @@ const CustomSingleValue: FC<CustomSingleValueProps> = ({ data }) => (
     <Image
       src={data.flag}
       alt={data.label}
-      className="flag-icon"
       width={32}
       height={32}
       style={{
@@ -73,18 +70,23 @@ const CustomSingleValue: FC<CustomSingleValueProps> = ({ data }) => (
   </div>
 );
 
-const LanguageSelector: FC<Props> = ({ value, onChange }) => {
+const LanguageSelector: FC<Props> = ({
+  value,
+  onChange,
+  keysToExclude = [],
+}) => {
   const options: SelectOption[] = useMemo(() => {
     const keys = Object.keys(locales) as LocaleKey[];
 
     return keys
+      .filter((key) => !keysToExclude.includes(key))
       .map((key) => ({
         value: key,
         label: locales[key].name,
         flag: locales[key].flag,
       }))
       .sort((a, b) => a.label.localeCompare(b.label));
-  }, []);
+  }, [keysToExclude]);
 
   const handleChange = (newValue: SingleValue<SelectOption>) => {
     onChange(newValue?.value ?? null);

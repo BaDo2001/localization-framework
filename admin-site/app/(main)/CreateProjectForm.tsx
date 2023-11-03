@@ -1,28 +1,39 @@
 import type { FC } from "react";
-import React, { useTransition } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useTransition } from "react";
+import type { UseFormReturn } from "react-hook-form";
+import { useController } from "react-hook-form";
+
+import { ErrorMessage } from "@hookform/error-message";
 
 import { createProject } from "@/api/projects/createProject";
 import LanguageSelector from "@/components/LanguageSelector";
 
-type Props = {
-  onClose: () => void;
-};
-
-type Form = {
+export type Form = {
   name: string;
   defaultLanguage: string;
 };
 
-const CreateProjectForm: FC<Props> = ({ onClose }) => {
-  const {
+type Props = {
+  onClose: () => void;
+  form: UseFormReturn<Form>;
+};
+
+const CreateProjectForm: FC<Props> = ({
+  onClose,
+  form: {
     handleSubmit,
     register,
     reset,
     formState: { errors },
     setError,
     control,
-  } = useForm<Form>();
+  },
+}) => {
+  const { field } = useController({
+    name: "defaultLanguage",
+    control,
+    rules: { required: "Default language is required" },
+  });
 
   const [isPending, startTransition] = useTransition();
 
@@ -57,34 +68,33 @@ const CreateProjectForm: FC<Props> = ({ onClose }) => {
           type="text"
           placeholder="Name..."
           className="input input-bordered w-full max-w-xs placeholder:text-base-content"
-          {...register("name", { required: true })}
+          {...register("name", { required: "Name is required" })}
         />
 
-        {errors.name && (
-          <span className="text-xs text-error">{errors.name.message}</span>
-        )}
+        <ErrorMessage
+          errors={errors}
+          name="name"
+          render={({ message }) => (
+            <span className="text-xs text-error">{message}</span>
+          )}
+        />
       </label>
 
       <label className="flex flex-col gap-1">
         <span className="label">Default language</span>
 
-        <Controller
-          control={control}
+        <LanguageSelector value={field.value} onChange={field.onChange} />
+
+        <ErrorMessage
+          errors={errors}
           name="defaultLanguage"
-          rules={{ required: true }}
-          render={({ field: { onChange, value } }) => (
-            <LanguageSelector value={value} onChange={onChange} />
+          render={({ message }) => (
+            <span className="text-xs text-error">{message}</span>
           )}
         />
-
-        {errors.defaultLanguage && (
-          <span className="text-xs text-error">
-            {errors.defaultLanguage.message}
-          </span>
-        )}
       </label>
 
-      <div className="modal-action justify-between">
+      <div className="modal-action justify-end">
         <button
           className="btn"
           type="button"
@@ -98,7 +108,7 @@ const CreateProjectForm: FC<Props> = ({ onClose }) => {
           {isPending ? (
             <span className="loading loading-spinner loading-sm" />
           ) : (
-            "Submit"
+            "Create"
           )}
         </button>
       </div>
