@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireProjectOwner } from "@/api/utils/requireProjectOwner";
 import prisma from "@/lib/prisma";
 
-export const removeMember = async (projectId: number, memberId: number) => {
+export const removeMember = async (projectId: string, memberId: string) => {
   await requireProjectOwner(projectId);
 
   await prisma.member.deleteMany({

@@ -9,7 +9,7 @@ type Props = {
 const ProjectPage = async ({ params }: Props) => {
   const { id } = params;
 
-  const project = await requireProjectMember(parseInt(id));
+  const project = await requireProjectMember(id);
 
   return (
     <div>

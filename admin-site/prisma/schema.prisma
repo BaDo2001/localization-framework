@@ -9,7 +9,7 @@ datasource db {
 }
 
 model Project {
-  id              Int     @id @default(autoincrement())
+  id              String  @id @default(uuid())
   name            String  @unique
   ownerId         String
   defaultLanguage String
@@ -20,16 +20,16 @@ model Project {
 }
 
 model Member {
-  id        Int    @id @default(autoincrement())
-  projectId Int
+  id        String @id @default(uuid())
+  projectId String
   userId    String
 
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 }
 
 model Translation {
-  id        Int    @id @default(autoincrement())
-  projectId Int
+  id        String @id @default(uuid())
+  projectId String
   language  String
 
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)

@@ -6,7 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { requireProjectOwner } from "@/api/utils/requireProjectOwner";
 import prisma from "@/lib/prisma";
 
-export const generateApiKey = async (projectId: number) => {
+export const generateApiKey = async (projectId: string) => {
   await requireProjectOwner(projectId);
 
   await prisma.project.update({

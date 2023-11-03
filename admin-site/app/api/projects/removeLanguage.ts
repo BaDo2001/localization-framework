@@ -6,8 +6,8 @@ import { requireProjectOwner } from "@/api/utils/requireProjectOwner";
 import prisma from "@/lib/prisma";
 
 export const removeLanguage = async (
-  projectId: number,
-  translationId: number,
+  projectId: string,
+  translationId: string,
 ) => {
   const project = await requireProjectOwner(projectId);
 

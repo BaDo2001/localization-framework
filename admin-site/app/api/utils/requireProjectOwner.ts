@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import prisma from "@/lib/prisma";
 
-export const requireProjectOwner = async (projectId: number) => {
+export const requireProjectOwner = async (projectId: string) => {
   const { userId } = auth();
 
   if (!userId) {

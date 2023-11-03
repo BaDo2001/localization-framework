@@ -6,7 +6,7 @@ import { redirect, RedirectType } from "next/navigation";
 
 import prisma from "@/lib/prisma";
 
-export const leaveProject = async (projectId: number) => {
+export const leaveProject = async (projectId: string) => {
   const { userId } = auth();
 
   if (!userId) {

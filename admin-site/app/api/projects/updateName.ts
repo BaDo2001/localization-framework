@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { requireProjectOwner } from "@/api/utils/requireProjectOwner";
 import prisma from "@/lib/prisma";
 
-export const updateName = async (projectId: number, newName: string) => {
+export const updateName = async (projectId: string, newName: string) => {
   await requireProjectOwner(projectId);
 
   try {

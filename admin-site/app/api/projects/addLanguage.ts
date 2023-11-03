@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { requireProjectOwner } from "@/api/utils/requireProjectOwner";
 import prisma from "@/lib/prisma";
 
-export const addLanguage = async (projectId: number, newLanguage: string) => {
+export const addLanguage = async (projectId: string, newLanguage: string) => {
   await requireProjectOwner(projectId);
 
   await prisma.translation.create({
