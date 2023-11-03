@@ -4,7 +4,6 @@ import type { FC } from "react";
 import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 
-import { useUser } from "@clerk/nextjs";
 import { ErrorMessage } from "@hookform/error-message";
 import type { Project } from "@prisma/client";
 
@@ -12,13 +11,14 @@ import { updateName } from "@/app/api/projects/updateName";
 
 type Props = {
   project: Project;
+  userId: string;
 };
 
 type Form = {
   name: string;
 };
 
-const ProjectName: FC<Props> = ({ project }) => {
+const ProjectName: FC<Props> = ({ project, userId }) => {
   const {
     handleSubmit,
     register,
@@ -29,9 +29,9 @@ const ProjectName: FC<Props> = ({ project }) => {
     defaultValues: {
       name: project.name,
     },
+    mode: "onChange",
   });
 
-  const { user } = useUser();
   const [isPending, startTransition] = useTransition();
 
   const onSubmit = handleSubmit((data) => {
@@ -61,12 +61,12 @@ const ProjectName: FC<Props> = ({ project }) => {
           <input
             type="text"
             placeholder="Name..."
-            className="input input-bordered w-full max-w-xs placeholder:text-base-content"
+            className="input input-bordered w-80 placeholder:text-base-content read-only:outline-none"
             {...register("name", { required: "Name is required" })}
-            readOnly={project.ownerId !== user?.id}
+            readOnly={project.ownerId !== userId}
           />
 
-          {project.ownerId === user?.id && (
+          {project.ownerId === userId && (
             <button
               type="submit"
               className="btn btn-primary"

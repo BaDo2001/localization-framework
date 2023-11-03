@@ -4,7 +4,6 @@ import type { FC } from "react";
 import { useTransition } from "react";
 import { LuClipboard, LuClipboardCheck } from "react-icons/lu";
 
-import { useUser } from "@clerk/nextjs";
 import type { Project } from "@prisma/client";
 import { useCopyToClipboard } from "usehooks-ts";
 
@@ -12,18 +11,13 @@ import { generateApiKey } from "@/api/projects/generateApiKey";
 
 type Props = {
   project: Project;
+  userId: string;
 };
 
-const ProjectApiKey: FC<Props> = ({ project }) => {
+const ProjectApiKey: FC<Props> = ({ project, userId }) => {
   const [value, copy] = useCopyToClipboard();
 
   const [isPending, startTransition] = useTransition();
-
-  const { user } = useUser();
-
-  if (!user) {
-    return null;
-  }
 
   const onCopy = () => {
     copy(project.apiKey!);
@@ -72,7 +66,7 @@ const ProjectApiKey: FC<Props> = ({ project }) => {
         type="button"
         className="btn btn-outline"
         onClick={onGenerate}
-        disabled={isPending || project.ownerId !== user.id}
+        disabled={isPending || project.ownerId !== userId}
       >
         {isPending ? (
           <span className="loading loading-spinner loading-sm" />

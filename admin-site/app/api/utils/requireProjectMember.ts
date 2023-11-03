@@ -3,7 +3,10 @@ import { notFound } from "next/navigation";
 
 import prisma from "@/lib/prisma";
 
-export const requireProjectMember = async (projectId: string) => {
+export const requireProjectMember = async (
+  projectId: string,
+  includeMembers = false,
+) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -25,6 +28,11 @@ export const requireProjectMember = async (projectId: string) => {
           },
         },
       ],
+    },
+    include: {
+      ...(includeMembers && {
+        members: true,
+      }),
     },
   });
 

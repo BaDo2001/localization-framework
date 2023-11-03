@@ -1,25 +1,19 @@
 "use client";
 
-import type { FC } from "react";
 import { useTransition } from "react";
+import { LuX } from "react-icons/lu";
 
-import type { Project } from "@prisma/client";
+import { removeMember } from "@/app/api/projects/removeMember";
 
-import { deleteProject } from "@/app/api/projects/deleteProject";
-import { leaveProject } from "@/app/api/projects/leaveProject";
-
-const modalId = "project-danger-modal";
+const modalId = "remove-member-modal";
 
 type Props = {
-  project: Project;
-  userId: string;
+  projectId: string;
+  memberId: string;
+  email: string;
 };
 
-const ProjectDangerButton: FC<Props> = ({ project, userId }) => {
-  const [isPending, startTransition] = useTransition();
-
-  const type = project.ownerId === userId ? "delete" : "leave";
-
+const MemberCard: React.FC<Props> = ({ projectId, memberId, email }) => {
   const onOpen = () => {
     const modal = document.getElementById(modalId);
     modal?.showModal?.();
@@ -30,14 +24,12 @@ const ProjectDangerButton: FC<Props> = ({ project, userId }) => {
     modal?.close?.();
   };
 
-  const onAction = () => {
+  const [isPending, startTransition] = useTransition();
+
+  const onRemove = () => {
     startTransition(async () => {
       try {
-        if (type === "delete") {
-          await deleteProject(project.id);
-        } else {
-          await leaveProject(project.id);
-        }
+        await removeMember(projectId, memberId);
       } catch (error) {
         console.log(error);
       }
@@ -46,15 +38,23 @@ const ProjectDangerButton: FC<Props> = ({ project, userId }) => {
 
   return (
     <>
-      <button type="button" className="btn btn-error" onClick={onOpen}>
-        {type === "delete" ? "Delete project" : "Leave project"}
-      </button>
+      <div className="flex justify-between items-center gap-8 w-full px-4 py-2 bg-base-100 rounded-xl">
+        <p>{email}</p>
+
+        <button type="button" onClick={onOpen}>
+          <LuX className="w-8 h-8 p-1 bg-error text-error-content rounded-full" />
+        </button>
+      </div>
 
       <dialog id={modalId} className="modal">
         <div className="modal-box overflow-visible">
           <h3 className="font-bold text-lg mb-4">
-            Are you sure you want to {type} this project?
+            Are you sure you want to remove this member?
           </h3>
+
+          <p>
+            This will remove <strong>{email}</strong> from this project.
+          </p>
 
           <div className="modal-action">
             <form method="dialog" className="flex gap-4">
@@ -64,19 +64,19 @@ const ProjectDangerButton: FC<Props> = ({ project, userId }) => {
                 onClick={onClose}
                 disabled={isPending}
               >
-                {type === "delete" ? "No, keep it" : "No, stay"}
+                No, keep
               </button>
 
               <button
                 className="btn btn-error"
                 type="button"
-                onClick={onAction}
+                onClick={onRemove}
                 disabled={isPending}
               >
                 {isPending ? (
                   <span className="loading loading-spinner loading-sm" />
                 ) : (
-                  <>{type === "delete" ? "Yes, delete it" : "Yes, leave"}</>
+                  <>Yes, remove</>
                 )}
               </button>
             </form>
@@ -91,4 +91,4 @@ const ProjectDangerButton: FC<Props> = ({ project, userId }) => {
   );
 };
 
-export default ProjectDangerButton;
+export default MemberCard;
