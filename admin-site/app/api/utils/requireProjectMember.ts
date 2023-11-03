@@ -3,7 +3,7 @@ import { notFound } from "next/navigation";
 
 import prisma from "@/lib/prisma";
 
-export const requireProjectOwner = async (projectId: number) => {
+export const requireProjectMember = async (projectId: number) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -13,7 +13,18 @@ export const requireProjectOwner = async (projectId: number) => {
   const project = await prisma.project.findUnique({
     where: {
       id: projectId,
-      ownerId: userId,
+      OR: [
+        {
+          ownerId: userId,
+        },
+        {
+          members: {
+            some: {
+              userId,
+            },
+          },
+        },
+      ],
     },
   });
 

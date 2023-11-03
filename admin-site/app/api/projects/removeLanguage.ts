@@ -11,24 +11,13 @@ export const removeLanguage = async (
 ) => {
   const project = await requireProjectOwner(projectId);
 
-  const translation = await prisma.translation.findUnique({
-    where: {
-      id: translationId,
-    },
-  });
-
-  if (!translation) {
-    throw new Error("Translation not found");
-  }
-
-  if (translation.language === project.defaultLanguage) {
-    throw new Error("Cannot remove default language");
-  }
-
   await prisma.translation.deleteMany({
     where: {
       projectId,
       id: translationId,
+      NOT: {
+        language: project.defaultLanguage,
+      },
     },
   });
 

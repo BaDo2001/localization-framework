@@ -1,24 +1,10 @@
-import { auth } from "@clerk/nextjs";
-
-import prisma from "@/lib/prisma";
+import { getAllProjects } from "@/api/projects/getAllProjects";
 
 import CreateProjectButton from "./CreateProjectButton";
 import ProjectCard from "./ProjectCard";
 
 const Projects = async () => {
-  const { userId } = auth();
-
-  if (!userId) {
-    return null;
-  }
-
-  // TODO: Include projects where user is a member
-
-  const projects = await prisma.project.findMany({
-    where: {
-      ownerId: userId,
-    },
-  });
+  const projects = await getAllProjects();
 
   return (
     <div>
@@ -27,7 +13,7 @@ const Projects = async () => {
 
         <CreateProjectButton />
       </div>
-      <ul className="mt-16 flex flex-wrap gap-10 justify-center">
+      <ul className="mt-16 flex flex-wrap gap-10">
         {projects.map((project) => (
           <ProjectCard key={project.id} project={project} />
         ))}
