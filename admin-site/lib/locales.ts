@@ -290,3 +290,11 @@ export type LocaleKey = keyof typeof locales;
 
 export const isLocaleKey = (key: string): key is LocaleKey =>
   Object.keys(locales).includes(key);
+
+export const getLocaleInfo = (key: string) => {
+  if (!isLocaleKey(key)) {
+    return null;
+  }
+
+  return locales[key];
+};

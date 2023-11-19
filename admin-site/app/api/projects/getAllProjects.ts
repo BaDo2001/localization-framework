@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 
 import prisma from "@/lib/prisma";
 
-export const getAllProjects = async () => {
+export const getAllProjects = async (includeTranslations = false) => {
   const { userId } = auth();
 
   if (!userId) {
@@ -24,6 +24,11 @@ export const getAllProjects = async () => {
           },
         },
       ],
+    },
+    include: {
+      ...(includeTranslations && {
+        translations: true,
+      }),
     },
   });
 
