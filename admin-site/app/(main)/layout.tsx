@@ -1,6 +1,6 @@
 import type { FC, PropsWithChildren } from "react";
 
-import Navbar from "./navbar/Navbar";
+import Navbar from "./navbar";
 
 const Layout: FC<PropsWithChildren> = ({ children }) => (
   <main className="flex h-full items-stretch">
