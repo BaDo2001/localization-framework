@@ -20,7 +20,7 @@ const SettingsMenuItem = ({ projectId }: Props) => {
         href={settingsLink}
         className={clsx(pathname === settingsLink && "active")}
       >
-        <summary className="flex items-center gap-x-2">
+        <summary className="flex items-center gap-x-2 font-semibold">
           <FiSettings />
           Settings
         </summary>

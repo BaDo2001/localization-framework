@@ -26,7 +26,7 @@ const TranslationsMenuItem = ({ project }: Props) => {
   return hasOnlyDefaultTransition ? null : (
     <li>
       <details open>
-        <summary>
+        <summary className="font-semibold">
           <FiFlag />
           Translations
         </summary>
