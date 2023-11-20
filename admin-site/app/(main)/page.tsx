@@ -4,7 +4,7 @@ import CreateProjectButton from "./CreateProjectButton";
 import ProjectCard from "./ProjectCard";
 
 const Projects = async () => {
-  const projects = await getAllProjects();
+  const projects = await getAllProjects(false);
 
   return (
     <div>

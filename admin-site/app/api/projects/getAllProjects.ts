@@ -3,7 +3,11 @@ import { redirect } from "next/navigation";
 
 import prisma from "@/lib/prisma";
 
-export const getAllProjects = async (includeTranslations = false) => {
+import type { ProjectIncludes } from "../types/project";
+
+export const getAllProjects = async <T extends boolean>(
+  includeTranslations: T,
+): Promise<ProjectIncludes<false, T>[]> => {
   const { userId } = auth();
 
   if (!userId) {
@@ -32,5 +36,5 @@ export const getAllProjects = async (includeTranslations = false) => {
     },
   });
 
-  return projects;
+  return projects as ProjectIncludes<false, T>[];
 };

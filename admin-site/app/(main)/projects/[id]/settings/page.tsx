@@ -20,7 +20,11 @@ type Props = {
 const ProjectSettingsPage = async ({ params }: Props) => {
   const { id } = params;
 
-  const project = await requireProjectMember(id, true);
+  const project = await requireProjectMember({
+    projectId: id,
+    includeMembers: true,
+    includeTranslations: true,
+  });
 
   const users = await Clerk({
     secretKey: process.env.CLERK_SECRET_KEY,

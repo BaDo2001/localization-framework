@@ -6,9 +6,8 @@ import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import type { ProjectWithTranslations } from "@/app/api/types/project";
 import { getLocaleInfo } from "@/lib/locales";
-
-import type { ProjectWithTranslations } from "./ProjectsMenu";
 
 type Props = {
   project: ProjectWithTranslations;

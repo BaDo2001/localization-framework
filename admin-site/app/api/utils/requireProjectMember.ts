@@ -3,10 +3,27 @@ import { notFound } from "next/navigation";
 
 import prisma from "@/lib/prisma";
 
-export const requireProjectMember = async (
-  projectId: string,
-  includeMembers = false,
-) => {
+import type { ProjectIncludes } from "../types/project";
+
+type RequireProjectMemberArgs<
+  Members extends boolean,
+  Translations extends boolean,
+> = {
+  projectId: string;
+  includeMembers: Members;
+  includeTranslations: Translations;
+};
+
+export const requireProjectMember = async <
+  Members extends boolean,
+  Translations extends boolean,
+>({
+  projectId,
+  includeMembers,
+  includeTranslations,
+}: RequireProjectMemberArgs<Members, Translations>): Promise<
+  ProjectIncludes<Members, Translations>
+> => {
   const { userId } = auth();
 
   if (!userId) {
@@ -33,7 +50,9 @@ export const requireProjectMember = async (
       ...(includeMembers && {
         members: true,
       }),
-      translations: true,
+      ...(includeTranslations && {
+        translations: true,
+      }),
     },
   });
 
@@ -41,5 +60,5 @@ export const requireProjectMember = async (
     return notFound();
   }
 
-  return project;
+  return project as ProjectIncludes<Members, Translations>;
 };
