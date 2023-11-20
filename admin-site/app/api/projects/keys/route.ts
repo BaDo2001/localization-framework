@@ -10,6 +10,19 @@ const Body = z.object({
   nativeText: z.string(),
 });
 
+/*
+POST /api/projects/keys
+
+Body: {
+  key: string;
+  nativeText: string;
+}
+
+Returns: {
+  success: true;
+}
+*/
+
 export async function POST(req: NextRequest) {
   const project = await requireProjectApiKey(true);
 

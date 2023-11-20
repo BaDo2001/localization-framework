@@ -5,6 +5,17 @@ import prisma from "@/lib/prisma";
 
 import { createNestedObject } from "../route";
 
+/*
+GET /api/projects/translations/{language}
+
+Returns: {
+  translations: {
+    [key: string]: string;
+  };
+}
+
+*/
+
 export async function GET(
   _request: Request,
   { params }: { params: { language: string } },

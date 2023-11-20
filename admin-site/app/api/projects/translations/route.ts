@@ -1,6 +1,19 @@
 import { requireProjectApiKey } from "@/api/utils/requireProjectApiKey";
 import prisma from "@/lib/prisma";
 
+/*
+GET /api/projects/translations
+
+Returns: {
+  languages: {
+    languageCode: string;
+    translations: {
+      [key: string]: string;
+    };
+  }[];
+}
+*/
+
 export async function GET() {
   const project = await requireProjectApiKey(false);
 
