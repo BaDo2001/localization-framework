@@ -3,7 +3,7 @@ import * as z from "zod";
 
 import { requireProjectApiKey } from "@/api/utils/requireProjectApiKey";
 
-import { saveNewKey } from "./addKey";
+import { saveNewKey } from "../../../keys/addKey";
 
 const Body = z.object({
   key: z.string(),

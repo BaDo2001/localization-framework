@@ -35,14 +35,19 @@ export const saveTranslation = async ({
     throw new Error("Translation not found");
   }
 
-  await prisma.translationEntry.update({
+  await prisma.translationEntry.upsert({
     where: {
       translationId_key: {
         translationId: translation.id,
         key,
       },
     },
-    data: {
+    create: {
+      translationId: translation.id,
+      key,
+      value,
+    },
+    update: {
       value,
     },
   });
