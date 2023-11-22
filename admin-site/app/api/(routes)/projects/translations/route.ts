@@ -34,7 +34,7 @@ export async function GET() {
     return NextResponse.json({
       languages: translations.map((translation) => ({
         languageCode: translation.language,
-        translations: formatTranslations(translation),
+        ...formatTranslations(translation),
       })),
     });
   } catch (error) {
