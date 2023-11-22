@@ -1,9 +1,9 @@
 import { NextResponse } from "next/server";
 
+import { handleError } from "@/app/api/utils/handleError";
 import { requireProjectApiKey } from "@/app/api/utils/requireProjectApiKey";
 import prisma from "@/lib/prisma";
-
-import { createNestedObject } from "../route";
+import { formatTranslations } from "@/utils/formatTranslations";
 
 /*
 GET /api/projects/translations/{language}
@@ -20,28 +20,27 @@ export async function GET(
   _request: Request,
   { params }: { params: { language: string } },
 ) {
-  const project = await requireProjectApiKey(false);
+  try {
+    const project = await requireProjectApiKey(false);
 
-  const translation = await prisma.translation.findUnique({
-    where: {
-      projectId_language: {
-        projectId: project.id,
-        language: params.language,
+    const translation = await prisma.translation.findUnique({
+      where: {
+        projectId_language: {
+          projectId: project.id,
+          language: params.language,
+        },
       },
-    },
-    include: {
-      translationEntries: true,
-    },
-  });
+      include: {
+        translationEntries: true,
+      },
+    });
 
-  if (!translation) {
-    return NextResponse.json({}, { status: 404 });
+    if (!translation) {
+      return NextResponse.json({}, { status: 404 });
+    }
+
+    return NextResponse.json(formatTranslations(translation));
+  } catch (error) {
+    return handleError(error);
   }
-
-  return NextResponse.json({
-    translations: translation.translationEntries.reduce((acc, entry) => ({
-      ...acc,
-      ...createNestedObject({}, entry.key.split("."), entry.value),
-    })),
-  });
 }

@@ -26,12 +26,14 @@ export const addLanguage = async (projectId: string, newLanguage: string) => {
       },
     }))!;
 
+    const defaultTranslationId = project.translations.find(
+      (translation) => translation.language === project.defaultLanguage,
+    )?.id;
+
     const defaultLanguageTranslationEntries =
       await tx.translationEntry.findMany({
         where: {
-          id: project.translations.find(
-            (translation) => translation.language === project.defaultLanguage,
-          )?.id,
+          translationId: defaultTranslationId,
         },
       });
 

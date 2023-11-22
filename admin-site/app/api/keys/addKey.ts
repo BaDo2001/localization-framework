@@ -1,10 +1,11 @@
 "use server";
 
-import type { Project, Translation } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
 import { requireProjectMember } from "@/api/utils/requireProjectMember";
 import prisma from "@/lib/prisma";
+
+import type { ProjectWithTranslations } from "../types/project";
 
 type AddKeyArgs = {
   projectId: string;
@@ -27,13 +28,40 @@ export const addKey = async ({ projectId, key, value }: AddKeyArgs) => {
 };
 
 type SaveNewKeyArgs = Omit<AddKeyArgs, "projectId"> & {
-  project: Project & {
-    translations: Translation[];
-  };
+  project: ProjectWithTranslations;
 };
 
 export const saveNewKey = async ({ project, key, value }: SaveNewKeyArgs) => {
   await prisma.$transaction(async (tx) => {
+    const currentEntries = await tx.translationEntry.findMany({
+      where: {
+        translation: {
+          projectId: project.id,
+          language: project.defaultLanguage,
+        },
+      },
+    });
+
+    const conflictingKeys = currentEntries.filter((entry) => {
+      if (entry.key === key) {
+        return true;
+      }
+
+      if (entry.key.startsWith(`${key}.`)) {
+        return true;
+      }
+
+      if (key.startsWith(`${entry.key}.`)) {
+        return true;
+      }
+
+      return false;
+    });
+
+    if (conflictingKeys.length > 0) {
+      throw new Error("Key already exists");
+    }
+
     await tx.translationEntry.createMany({
       data: project.translations.map((translation) => ({
         translationId: translation.id,
@@ -43,5 +71,5 @@ export const saveNewKey = async ({ project, key, value }: SaveNewKeyArgs) => {
     });
   });
 
-  revalidatePath(`/project/${project.id}/translations/[languages]`);
+  revalidatePath(`/project/${project.id}/translations/[languages]`, "page");
 };

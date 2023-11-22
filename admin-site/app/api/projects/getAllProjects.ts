@@ -1,9 +1,8 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
+import type { ProjectIncludes } from "@/api/types/project";
 import prisma from "@/lib/prisma";
-
-import type { ProjectIncludes } from "../types/project";
 
 export const getAllProjects = async <T extends boolean>(
   includeTranslations: T,

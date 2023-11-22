@@ -1,6 +1,6 @@
 import type { Member, Project, Translation } from "@prisma/client";
 
-export type ProjectWithTranslations = Project & { translations: Translation[] };
+export type ProjectWithTranslations = ProjectIncludes<false, true>;
 
 export type ProjectIncludes<
   Members extends boolean,

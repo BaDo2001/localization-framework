@@ -52,7 +52,12 @@ const ProjectSettingsPage = async ({ params }: Props) => {
         <div className="flex flex-col gap-2">
           {!readonly && (
             <div className="mb-6">
-              <AddProjectLanguage project={project} />
+              <AddProjectLanguage
+                project={{
+                  ...project,
+                  members: undefined,
+                }}
+              />
             </div>
           )}
 

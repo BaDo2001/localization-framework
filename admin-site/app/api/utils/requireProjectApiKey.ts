@@ -1,8 +1,9 @@
 import { headers } from "next/headers";
 
+import type { ProjectIncludes } from "@/api/types/project";
 import prisma from "@/lib/prisma";
 
-import type { ProjectIncludes } from "../types/project";
+export class ApiKeyError extends Error {}
 
 export const requireProjectApiKey = async <T extends boolean>(
   includeTranslations: T,
@@ -10,7 +11,7 @@ export const requireProjectApiKey = async <T extends boolean>(
   const authHeader = headers().get("Authorization");
 
   if (!authHeader) {
-    throw new Error("Missing Authorization header");
+    throw new ApiKeyError("Missing Authorization header");
   }
 
   const apiKey = authHeader.replace("Bearer ", "");
@@ -25,7 +26,7 @@ export const requireProjectApiKey = async <T extends boolean>(
   });
 
   if (!project) {
-    throw new Error("Invalid API key");
+    throw new ApiKeyError("Invalid API key");
   }
 
   return project as ProjectIncludes<false, T>;
