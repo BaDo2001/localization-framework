@@ -35,10 +35,10 @@
           "default": null,
           "description": "Base Url of the backend server where the translation project is located."
         },
-        "localizationframework.projectId": {
+        "localizationframework.apiKey": {
           "type": "string",
           "default": null,
-          "description": "Unique id of the project which the translations get synchronized to."
+          "description": "Key used for authorization and identification of the project."
         },
         "localizationframework.translationsFolder": {
           "type": "string",

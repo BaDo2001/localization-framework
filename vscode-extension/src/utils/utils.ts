@@ -2,6 +2,7 @@ import * as https from "https";
 import * as vscode from "vscode";
 import { ExtensionConstants as ec } from "../utils/utils";
 import { LocalizationFrameworkClient } from "../network/client";
+import { TextEncoder } from "util";
 
 export const customHttpsAgent = new https.Agent({
   rejectUnauthorized: false,
@@ -15,7 +16,7 @@ export const ExtensionConstants = {
   },
   settings: {
     baseUrl: "baseUrl",
-    projectId: "projectId",
+    apiKey: "apiKey",
     translationsFolder: "translationsFolder",
   },
   cancel: "canceled",
@@ -29,37 +30,36 @@ export const LocalizationFrameworkUtils = {
     );
   },
 
-  getProjectId: async (): Promise<string | undefined> => {
+  getApiKey: async (): Promise<string | undefined> => {
     const settings = vscode.workspace.getConfiguration(ec.extensionName);
-    let projectId = settings.get<string | null>(ec.settings.projectId);
+    let apiKey = settings.get<string | null>(ec.settings.apiKey);
 
-    if (projectId) return projectId;
+    if (apiKey) return apiKey;
 
-    const projects = await LocalizationFrameworkClient.getProjects(
-      async () => {}
+    if (!apiKey) {
+      apiKey = await vscode.window.showInputBox({
+        prompt: "Enter api key:",
+        title: "Enter an api key to access you project",
+        placeHolder: "26acca05-4694-4671-9e43-78a694905d97",
+      });
+
+      if (!apiKey) throw ec.cancel;
+    }
+
+    const project = await LocalizationFrameworkClient.getProjectInfo(
+      apiKey,
+      async (error) => {
+        await vscode.window.showErrorMessage(`Error: ${error}`);
+      }
     );
 
-    if (!projects || projects.length === 0) {
-      await vscode.window.showErrorMessage("No projects found.");
+    if (!project) {
       return undefined;
     }
 
-    let selection = projects.map((p) => `${p.name} |${p.id}`);
+    await settings.update(ec.settings.apiKey, apiKey);
 
-    if (!projectId) {
-      let selected = await vscode.window.showQuickPick(selection, {
-        canPickMany: false,
-        title: "Select a project for synchronization:",
-      });
-
-      projectId = selected?.split("|")?.at(1);
-
-      if (!projectId) throw ec.cancel;
-    }
-
-    await settings.update(ec.settings.projectId, projectId);
-
-    return projectId;
+    return apiKey;
   },
 
   getTranslationsFolder: async (): Promise<string | undefined> => {
@@ -97,16 +97,6 @@ export const LocalizationFrameworkUtils = {
     return true;
   },
 
-  dotToNestedObject: (dottedObject: any): any => {
-    let keys = Object.keys(dottedObject);
-    let obj = {};
-    keys.forEach((key) => {
-      let ks = key.split(".");
-      obj = writeWithKey(ks, obj, dottedObject[key]);
-    });
-    return obj;
-  },
-
   hasWorkSpaceOpen: (): boolean => {
     const wsfs = vscode.workspace.workspaceFolders;
     if (!wsfs || wsfs.length === 0) {
@@ -117,23 +107,6 @@ export const LocalizationFrameworkUtils = {
     return true;
   },
 };
-
-function writeWithKey(keys: string[], obj: any, value: any): any {
-  let key = keys.shift();
-  if (!key) return;
-
-  let p = obj[key];
-  if (!p) {
-    obj[key] = {};
-  }
-
-  if (keys.length === 0) {
-    obj[key] = value;
-  } else {
-    writeWithKey(keys, obj[key], value);
-  }
-  return obj;
-}
 
 async function checkFolderExists(folderPath: string): Promise<boolean> {
   const wsfs = vscode.workspace.workspaceFolders;

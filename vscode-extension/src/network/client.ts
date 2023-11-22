@@ -9,15 +9,16 @@ type errorCallback = (error: any) => Promise<any>;
 
 export const LocalizationFrameworkClient = {
   syncProject: async (
-    projectId: string,
     errorCallback: errorCallback
   ): Promise<Translations | undefined> => {
     const baseUrl = await getBaseUrl();
+    const apiKey = await LocalizationFrameworkUtils.getApiKey();
     try {
       const response = await axios.get<Translations>(
-        `${baseUrl}/api/projects/${projectId}/translations`,
+        `${baseUrl}/api/projects/translations`,
         {
           httpsAgent: customHttpsAgent,
+          headers: { Authorization: `Bearer ${apiKey}` },
         }
       );
       return response.data;
@@ -26,13 +27,15 @@ export const LocalizationFrameworkClient = {
     }
   },
 
-  getProjects: async (
+  getProjectInfo: async (
+    apiKey: string,
     errorCallback: errorCallback
   ): Promise<Project[] | undefined> => {
     const baseUrl = await getBaseUrl();
     try {
       const response = await axios.get<Project[]>(`${baseUrl}/api/projects`, {
         httpsAgent: customHttpsAgent,
+        headers: { Authorization: `Bearer ${apiKey}` },
       });
       return response.data;
     } catch (error) {
@@ -41,21 +44,22 @@ export const LocalizationFrameworkClient = {
   },
 
   addNewKey: async (
-    projectId: string,
     key: string,
     nativeText: string,
     errorCallback: errorCallback
   ): Promise<any> => {
     const baseUrl = await getBaseUrl();
+    const apiKey = await LocalizationFrameworkUtils.getApiKey();
     try {
       const response = await axios.post(
-        `${baseUrl}/api/projects/${projectId}/keys`,
+        `${baseUrl}/api/projects/keys`,
         {
           key: key,
           nativeText: nativeText,
         },
         {
           httpsAgent: customHttpsAgent,
+          headers: { Authorization: `Bearer ${apiKey}` },
         }
       );
       return response;

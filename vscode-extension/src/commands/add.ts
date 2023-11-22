@@ -7,7 +7,7 @@ import { LocalizationFrameworkClient } from "../network/client";
 import { handleSyncCommand } from "./sync";
 
 export async function handleAddCommand() {
-  const projectId = await LocalizationFrameworkUtils.getProjectId();
+  const projectId = await LocalizationFrameworkUtils.getApiKey();
   if (!projectId) return;
 
   const key = await vscode.window.showInputBox({
@@ -27,18 +27,20 @@ export async function handleAddCommand() {
   if (!nativeText) throw ec.cancel;
 
   const response = await LocalizationFrameworkClient.addNewKey(
-    projectId,
     key,
     nativeText,
     async (error) => {
       vscode.window.showErrorMessage(
-        `Cannot add key: ${error.response?.data?.message ?? error}`
+        `Cannot add key: ${error.response?.data?.error ?? error}`
       );
     }
   );
 
   if (response && response.status === 200) {
-    await handleSyncCommand();
-    vscode.window.showInformationMessage(`Localization added for key: ${key}`);
+    handleSyncCommand().then(() => {
+      vscode.window.showInformationMessage(
+        `Localization added for key: ${key}`
+      );
+    });
   }
 }

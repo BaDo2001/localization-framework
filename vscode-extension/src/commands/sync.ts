@@ -4,17 +4,13 @@ import { LocalizationFrameworkClient } from "../network/client";
 import { Translations } from "../models/translations";
 
 export async function handleSyncCommand() {
-  const projectId = await LocalizationFrameworkUtils.getProjectId();
-  if (!projectId) return;
-
   const translationsFolder =
     await LocalizationFrameworkUtils.getTranslationsFolder();
   if (!translationsFolder) return;
 
   const syncedProject = await LocalizationFrameworkClient.syncProject(
-    projectId,
     async (error: unknown) => {
-      await vscode.window.showErrorMessage(`Sync failed! ${error}`);
+      vscode.window.showErrorMessage(`Sync failed! ${error}`);
     }
   );
 
@@ -22,7 +18,7 @@ export async function handleSyncCommand() {
 
   writeTranslationFiles(syncedProject);
 
-  await vscode.window.showInformationMessage("Localization files synced.");
+  vscode.window.showInformationMessage("Localization files synced.");
 }
 
 async function writeTranslationFiles(translations: Translations) {
@@ -39,12 +35,9 @@ async function writeTranslationFiles(translations: Translations) {
       folderUri,
       `translations_${language.languageCode}.json`
     );
-    let nested = LocalizationFrameworkUtils.dotToNestedObject(
-      language.translations
-    );
     LocalizationFrameworkUtils.createFileFromJson(
       fileUri,
-      JSON.stringify(nested, null, 2)
+      JSON.stringify(language.translations, null, 2)
     );
   });
 }
