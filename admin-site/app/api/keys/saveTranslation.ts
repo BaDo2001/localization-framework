@@ -8,7 +8,7 @@ import prisma from "@/lib/prisma";
 type SaveTranslationArgs = {
   projectId: string;
   key: string;
-  value: string;
+  value: string | null;
   language: string;
 };
 
@@ -54,5 +54,5 @@ export const saveTranslation = async ({
     },
   });
 
-  revalidatePath(`projects/${projectId}/translations/[languages]`);
+  revalidatePath(`projects/${projectId}/translations/[languages]`, "page");
 };

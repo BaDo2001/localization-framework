@@ -4,8 +4,6 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { FaUndo } from "react-icons/fa";
 
-import { ErrorMessage } from "@hookform/error-message";
-
 import { saveTranslation } from "@/app/api/keys/saveTranslation";
 import type { TranslationEntryPair } from "@/app/api/types/translation";
 
@@ -15,7 +13,7 @@ type Props = {
 };
 
 type Form = {
-  targetValue: string;
+  targetValue: string | null;
 };
 
 const TranslationEntryPairEditor = ({
@@ -25,18 +23,18 @@ const TranslationEntryPairEditor = ({
   const {
     handleSubmit,
     register,
-    formState: { errors, isDirty },
+    formState: { isDirty },
     reset,
   } = useForm<Form>({
     defaultValues: {
-      targetValue: targetEntry.value ?? "",
+      targetValue: targetEntry.value,
     },
     mode: "onChange",
   });
 
   const [isPending, startTransition] = useTransition();
 
-  const handleUndo = () => reset({ targetValue: targetEntry.value ?? "" });
+  const handleUndo = () => reset({ targetValue: targetEntry.value });
 
   const onSubmit = handleSubmit(({ targetValue }) => {
     startTransition(async () => {
@@ -44,7 +42,7 @@ const TranslationEntryPairEditor = ({
         await saveTranslation({
           projectId: targetEntry.translation.projectId,
           key: targetEntry.key,
-          value: targetValue,
+          value: targetValue || null,
           language: targetEntry.translation.language,
         });
 
@@ -69,20 +67,10 @@ const TranslationEntryPairEditor = ({
             <textarea
               className="resize-none w-full mb-1 h-full focus:p-2 transition-all duration-200 min-h-[100px] rounded-lg focus:outline-zinc-400"
               readOnly={readonly}
-              {...register("targetValue", {
-                required: "Translation is required",
-              })}
+              {...register("targetValue")}
             />
 
             <div className="flex justify-between">
-              <ErrorMessage
-                errors={errors}
-                name="targetValue"
-                render={({ message }) => (
-                  <span className="text-xs text-error">{message}</span>
-                )}
-              />
-
               <div className="flex-1" />
 
               {!readonly && (
