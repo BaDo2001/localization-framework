@@ -1,4 +1,6 @@
 const HttpBackend = require("i18next-http-backend/cjs");
+const ChainedBackend = require("i18next-chained-backend/i18nextChainedBackend");
+const resourcesToBackend = require("i18next-resources-to-backend/cjs");
 
 /**
  * @type {import('next-i18next').UserConfig}
@@ -6,42 +8,52 @@ const HttpBackend = require("i18next-http-backend/cjs");
 module.exports = {
   // https://www.i18next.com/overview/configuration-options#logging
   debug: process.env.NODE_ENV === "development",
-  interpolation: {
-    escapeValue: false,
-  },
   i18n: {
     defaultLocale: "en",
     locales: ["en", "hu"],
   },
-  use: [HttpBackend],
+  use: [ChainedBackend],
   backend: {
-    crossDomain: true,
-    loadPath: "http://localhost:3001/project-id/{{lng}}/{{ns}}.json",
-    requestOptions: {
-      mode: "cors",
-      credentials: "same-origin",
-      cache: "default",
-    },
-    parse: async (data, url) => {
-      return JSON.parse(data);
-    },
-    request: async (options, url, payload, callback) => {
-      try {
-        const response = await fetch(url, {
-          ...options,
-          body: payload,
-        });
-        const responseData = await response.json();
-        callback(null, { status: response.status, data: responseData });
-      } catch (error) {
-        console.log(error);
-        callback(error, {
-          status: error.response?.status,
-          data: error.response?.data,
-        });
-      }
-    },
-    // addPath: "/locales/add/{{lng}}/{{ns}}",
+    backends: [
+      HttpBackend,
+      resourcesToBackend((lng, ns) =>
+        require(`public/locales/${lng}/${ns}.json`)
+      ),
+    ],
+    backendOptions: [
+      {
+        crossDomain: true,
+        loadPath: "http://localhost:3001/project-id/{{lng}}/{{ns}}.json",
+        requestOptions: {
+          mode: "cors",
+          credentials: "same-origin",
+          cache: "default",
+        },
+        reloadInterval: 5_000,
+        parse: async (data, url) => {
+          return JSON.parse(data);
+        },
+        request: async (options, url, payload, callback) => {
+          try {
+            const response = await fetch(url, {
+              ...options,
+              body: payload,
+            });
+            const responseData = await response.json();
+            if (response.status >= 400) {
+              throw new Error(responseData.error);
+            }
+            callback(null, { status: response.status, data: responseData });
+          } catch (error) {
+            callback(error, {
+              status: error.response?.status,
+              data: error.response?.data,
+            });
+          }
+        },
+        // addPath: "/locales/add/{{lng}}/{{ns}}",
+      },
+    ],
   },
   /** To avoid issues when deploying to some paas (vercel...) */
   // localePath:
@@ -57,5 +69,5 @@ module.exports = {
   // saveMissing: false,
   // strictMode: true,
   serializeConfig: false,
-  react: { useSuspense: false },
+  // react: { useSuspense: false },
 };

@@ -32,6 +32,13 @@ const Homepage = (props: Props) => {
         <h1>{t("title")}</h1>
         <hr />
         <div>
+          <p>
+            {t("username")} <input type="text" name="username" id="username" />
+          </p>
+          <p>
+            {t("password")}{" "}
+            <input type="password" name="password" id="password" />
+          </p>
           <Link href="/" locale={changeTo}>
             <button>{t("changeLanguage", { changeTo })}</button>
           </Link>

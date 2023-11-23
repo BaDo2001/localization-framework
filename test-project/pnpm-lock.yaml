@@ -8,12 +8,15 @@ dependencies:
   i18next:
     specifier: ^23.7.6
     version: 23.7.6
-  i18next-fetch-backend:
-    specifier: ^5.0.2
-    version: 5.0.2
+  i18next-chained-backend:
+    specifier: ^4.6.2
+    version: 4.6.2
   i18next-http-backend:
     specifier: ^2.4.2
     version: 2.4.2
+  i18next-resources-to-backend:
+    specifier: ^1.2.0
+    version: 1.2.0
   next:
     specifier: 14.0.3
     version: 14.0.3(react-dom@18.2.0)(react@18.2.0)
@@ -1449,9 +1452,10 @@ packages:
       void-elements: 3.1.0
     dev: false
 
-  /i18next-fetch-backend@5.0.2:
-    resolution: {integrity: sha512-cmcRi+5IGSs/EqeZwwkgl9FuBGGAVMJuudX5LI4q65URKqKOFmCPPJ3akGK2/KjfmZ0Ntt+JnNVrSX+xwR2FZg==}
-    engines: {node: '>=14'}
+  /i18next-chained-backend@4.6.2:
+    resolution: {integrity: sha512-2P092fR+nAPQlGzPUoIIxbwo7PTBqQYgLxwv1XhSTQUAUoelLo5LkX+FqRxxSDg9WEAsrc8+2WL6mJtMGIa6WQ==}
+    dependencies:
+      '@babel/runtime': 7.23.4
     dev: false
 
   /i18next-fs-backend@2.3.0:
@@ -1464,6 +1468,12 @@ packages:
       cross-fetch: 4.0.0
     transitivePeerDependencies:
       - encoding
+    dev: false
+
+  /i18next-resources-to-backend@1.2.0:
+    resolution: {integrity: sha512-8f1l03s+QxDmCfpSXCh9V+AFcxAwIp0UaroWuyOx+hmmv8484GcELHs+lnu54FrNij8cDBEXvEwhzZoXsKcVpg==}
+    dependencies:
+      '@babel/runtime': 7.23.4
     dev: false
 
   /i18next@23.7.6:
