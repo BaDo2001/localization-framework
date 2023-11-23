@@ -36,11 +36,17 @@ export const getTranslationEntryPairs = async ({
     where: {
       translationId: sourceTranslation.id,
     },
+    orderBy: {
+      key: "asc",
+    },
   });
 
   const targetEntries = await prisma.translationEntry.findMany({
     where: {
       translationId: targetTranslation.id,
+    },
+    orderBy: {
+      key: "asc",
     },
   });
 
