@@ -4,6 +4,7 @@ import { requireProjectMember as getProject } from "@/app/api/utils/requireProje
 import { parseLanguageParams } from "@/lib/params";
 
 import AddKeyButton from "./add-key/AddKeyButton";
+import TranslationEditor from "./editor/TranslationEditor";
 import LanguagePairSelector from "./LanguagePairSelector";
 
 type Props = {
@@ -48,12 +49,19 @@ const TranslationPage = async ({ params }: Props) => {
         <AddKeyButton projectId={projectId} />
       </div>
 
-      <LanguagePairSelector
-        projectId={projectId}
-        projectLanguages={projectLanguages}
-        defaultSourceLanguage={source}
-        defaultTargetLanguage={target}
-      />
+      <div className="flex flex-col gap-y-10 w-2/3 mx-auto">
+        <LanguagePairSelector
+          project={project}
+          defaultSourceLanguage={source}
+          defaultTargetLanguage={target}
+        />
+
+        <TranslationEditor
+          projectId={projectId}
+          sourceLanguage={source}
+          targetLanguage={target}
+        />
+      </div>
     </div>
   );
 };
