@@ -2,14 +2,19 @@
 
 import type { FC } from "react";
 import { useMemo } from "react";
-import type { OptionProps, SingleValue, SingleValueProps } from "react-select";
+import type {
+  ClassNamesConfig,
+  GroupBase,
+  OptionProps,
+  SingleValue,
+  SingleValueProps,
+} from "react-select";
 import Select from "react-select";
 
 import clsx from "clsx";
 import Image from "next/image";
 
-import type { LocaleKey } from "@/lib/locales";
-import { locales } from "@/lib/locales";
+import { getLocaleKeysExcluding, locales } from "@/lib/locales";
 
 type SelectOption = {
   value: string;
@@ -21,6 +26,7 @@ type Props = {
   value: string | null | string[];
   onChange: (value: string | null | string[]) => void;
   keysToExclude?: string[];
+  classNames?: ClassNamesConfig<SelectOption, false, GroupBase<SelectOption>>;
 };
 
 type CustomOptionProps = OptionProps<SelectOption>;
@@ -74,12 +80,12 @@ const LanguageSelector: FC<Props> = ({
   value,
   onChange,
   keysToExclude = [],
+  classNames,
 }) => {
   const options: SelectOption[] = useMemo(() => {
-    const keys = Object.keys(locales) as LocaleKey[];
+    const keys = getLocaleKeysExcluding(keysToExclude);
 
     return keys
-      .filter((key) => !keysToExclude.includes(key))
       .map((key) => ({
         value: key,
         label: locales[key].name,
@@ -104,8 +110,10 @@ const LanguageSelector: FC<Props> = ({
       options={options}
       classNames={{
         control: () => "input input-bordered w-full max-w-xs !cursor-pointer",
-        menuList: () => "bg-base-100 max-w-xs border-l border-zinc-200",
+        menuList: () =>
+          "bg-base-100 max-w-xs border-l border-zinc-200 shadow-lg",
         placeholder: () => "text-base-content",
+        ...classNames,
       }}
       unstyled
       placeholder="Select language..."
