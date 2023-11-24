@@ -46,7 +46,7 @@ const TranslationPage = async ({ params }: Props) => {
       <div className="flex justify-between items-center mb-16">
         <h1 className="text-xl">{project.name}</h1>
 
-        <AddKeyButton projectId={projectId} />
+        <AddKeyButton project={project} />
       </div>
 
       <div className="flex flex-col gap-y-10 w-2/3 mx-auto">

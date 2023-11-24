@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 
+import type { ProjectWithTranslations } from "@/app/api/types/project";
 import Dialog from "@/components/Dialog";
 import { useDialog } from "@/hooks/useDialog";
 
@@ -9,12 +10,12 @@ import type { Form } from "./AddKeyForm";
 import AddKeyForm from "./AddKeyForm";
 
 type Props = {
-  projectId: string;
+  project: ProjectWithTranslations;
 };
 
 const modalId = "add-translation-key-modal";
 
-const AddKeyButton = ({ projectId }: Props) => {
+const AddKeyButton = ({ project }: Props) => {
   const { onOpen, onClose } = useDialog(modalId);
   const form = useForm<Form>();
 
@@ -29,7 +30,7 @@ const AddKeyButton = ({ projectId }: Props) => {
       <Dialog id={modalId} onClose={handleClose}>
         <h3 className="font-bold text-lg mb-4">Add new translation key</h3>
 
-        <AddKeyForm projectId={projectId} onClose={onClose} form={form} />
+        <AddKeyForm project={project} onClose={onClose} form={form} />
       </Dialog>
     </>
   );

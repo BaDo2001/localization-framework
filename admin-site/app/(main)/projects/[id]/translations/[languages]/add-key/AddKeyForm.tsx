@@ -4,6 +4,8 @@ import type { UseFormReturn } from "react-hook-form";
 import { ErrorMessage } from "@hookform/error-message";
 
 import { addKey } from "@/app/api/keys/addKey";
+import type { ProjectWithTranslations } from "@/app/api/types/project";
+import { getLocaleInfo } from "@/lib/locales";
 
 export type Form = {
   key: string;
@@ -11,13 +13,13 @@ export type Form = {
 };
 
 type Props = {
-  projectId: string;
+  project: ProjectWithTranslations;
   onClose: () => void;
   form: UseFormReturn<Form>;
 };
 
 const AddKeyForm: FC<Props> = ({
-  projectId,
+  project,
   onClose,
   form: {
     handleSubmit,
@@ -37,7 +39,7 @@ const AddKeyForm: FC<Props> = ({
   const onSubmit = handleSubmit(({ key, value }) => {
     startTransition(async () => {
       try {
-        await addKey({ projectId, key, value });
+        await addKey({ projectId: project.id, key, value });
 
         handleClose();
       } catch (error) {
@@ -77,7 +79,7 @@ const AddKeyForm: FC<Props> = ({
 
       <div className="flex flex-col gap-1">
         <label htmlFor="value" className="label">
-          Value
+          Value in {getLocaleInfo(project.defaultLanguage)?.name}
         </label>
 
         <input
