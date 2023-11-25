@@ -298,3 +298,9 @@ export const getLocaleInfo = (key: string) => {
 
   return locales[key];
 };
+
+export const getLocaleKeysExcluding = (keysToExclude: string[]) => {
+  const keys = Object.keys(locales) as LocaleKey[];
+
+  return keys.filter((key) => !keysToExclude.includes(key));
+};

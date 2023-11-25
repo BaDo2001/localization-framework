@@ -1,12 +1,14 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
+
 import { requireProjectMember } from "@/api/utils/requireProjectMember";
 import prisma from "@/lib/prisma";
 
 type SaveTranslationArgs = {
   projectId: string;
   key: string;
-  value: string;
+  value: string | null;
   language: string;
 };
 
@@ -51,4 +53,6 @@ export const saveTranslation = async ({
       value,
     },
   });
+
+  revalidatePath(`projects/${projectId}/translations/[languages]`, "page");
 };
