@@ -1,4 +1,4 @@
-import { getTranslationEntryPairs } from "@/app/api/translations/getTranslationEntryPairs";
+import { getTranslationEntryPairs } from "@/app/api/keys/getTranslationEntryPairs";
 
 import TranslationEntryPairEditor from "./TranslationEntryPairEditor";
 
