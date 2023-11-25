@@ -1,9 +1,7 @@
-import type { Project, Translation } from "@prisma/client";
+import type { ProjectWithTranslations } from "@/app/api/types/project";
 
 import SettingsMenuItem from "./SettingsMenuItem";
 import TranslationsMenuItem from "./TranslationsMenuItem";
-
-export type ProjectWithTranslations = Project & { translations: Translation[] };
 
 type Props = {
   projects: ProjectWithTranslations[];

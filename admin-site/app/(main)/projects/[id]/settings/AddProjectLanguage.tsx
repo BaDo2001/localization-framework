@@ -4,15 +4,13 @@ import { useTransition } from "react";
 import { useController, useForm } from "react-hook-form";
 
 import { ErrorMessage } from "@hookform/error-message";
-import type { Project, Translation } from "@prisma/client";
 
 import { addLanguage } from "@/app/api/projects/addLanguage";
+import type { ProjectWithTranslations } from "@/app/api/types/project";
 import LanguageSelector from "@/components/LanguageSelector";
 
 type Props = {
-  project: Project & {
-    translations: Translation[];
-  };
+  project: ProjectWithTranslations;
 };
 
 type Form = {
