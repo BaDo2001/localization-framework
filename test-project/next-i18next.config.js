@@ -3,6 +3,8 @@ const LocalStorageBackend = require('i18next-localstorage-backend/i18nextLocalSt
 const resourcesToBackend = require('i18next-resources-to-backend/cjs');
 const TranslationBackend = require('sdk');
 
+const isBrowser = typeof window !== 'undefined';
+
 /**
  * @type {import('next-i18next').UserConfig}
  */
@@ -16,6 +18,7 @@ module.exports = {
   use: [ChainedBackend],
   partialBundledLanguages: true,
   backend: {
+    reloadInterval: isBrowser ? false : 5_000,
     backends: [
       LocalStorageBackend,
       TranslationBackend,
@@ -27,7 +30,7 @@ module.exports = {
       {},
       {
         projectId: process.env.I18NEXT_PROJECT_ID,
-        reloadInterval: 5_000,
+        // reloadInterval: 5_000,
       },
     ],
   },
