@@ -12,6 +12,7 @@ module.exports = {
     defaultLocale: 'en',
     locales: ['en', 'hu'],
   },
+  fallbackLng: 'en',
   use: [ChainedBackend],
   partialBundledLanguages: true,
   backend: {
@@ -26,7 +27,7 @@ module.exports = {
       {},
       {
         projectId: 'asd',
-        reloadInterval: 60_000,
+        reloadInterval: 5_000,
       },
     ],
   },
