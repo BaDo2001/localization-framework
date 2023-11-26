@@ -21,7 +21,7 @@ const TranslationEditor = ({ pairs }: Props) =>
       ))}
     </div>
   ) : (
-    <p className="text-center">No keys have been added to this project yet</p>
+    <p className="text-center">No keys were found</p>
   );
 
 export default TranslationEditor;
