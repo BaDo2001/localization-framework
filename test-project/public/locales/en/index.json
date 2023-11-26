@@ -1,8 +1,0 @@
-{
-  "title": "Home",
-  "item": "item",
-  "item_one": "item",
-  "item_other": "items",
-  "itemWithCount_one": "{{count}} item",
-  "itemWithCount_other": "{{count}} items"
-}
