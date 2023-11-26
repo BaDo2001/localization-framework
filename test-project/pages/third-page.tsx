@@ -8,23 +8,17 @@ import Footer from '@/components/Footer';
 
 const ThirdPage = () => {
   const router = useRouter();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation(['thirdPage']);
 
   return (
     <>
       <Header />
-      <main>
-        <h1>{t('title')}</h1>
-        <hr />
-        <div>
-          <p>
-            {t('username')} <input type="text" name="username" id="username" />
-          </p>
-          <p>
-            {t('password')}{' '}
-            <input type="password" name="password" id="password" />
-          </p>
-        </div>
+      <main className="container pt-10 mx-auto">
+        <article className="max-w-6xl rounded-2xl shadow-lg p-10 mx-auto ">
+          <h1 className="text-3xl font-bold">{t('thirdPage:title')}</h1>
+          <div className="divider divider-neutral"></div>
+          <div className="flex-col space-y-3"></div>
+        </article>
       </main>
       <Footer />
     </>
@@ -33,7 +27,11 @@ const ThirdPage = () => {
 
 export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   props: {
-    ...(await serverSideTranslations(locale ?? 'en', ['common'])),
+    ...(await serverSideTranslations(locale ?? 'en', [
+      'header',
+      'common',
+      'thirdPage',
+    ])),
   },
 });
 
