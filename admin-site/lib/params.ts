@@ -22,3 +22,30 @@ export const parseLanguageParams = (languages: string): LanguagePair | null => {
     target,
   };
 };
+
+export const parseBooleanQueryParam = (param: string | null | undefined) =>
+  param === "true";
+
+export type KeyFilter = {
+  query?: string;
+  emptyOnly?: boolean;
+  group?: string;
+};
+
+export const getQueryString = ({ query, emptyOnly, group }: KeyFilter) => {
+  const params = new URLSearchParams();
+
+  if (query) {
+    params.append("query", query);
+  }
+
+  if (emptyOnly) {
+    params.append("emptyOnly", String(emptyOnly));
+  }
+
+  if (group) {
+    params.append("group", group);
+  }
+
+  return params.toString();
+};

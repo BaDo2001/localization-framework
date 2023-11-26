@@ -1,18 +1,21 @@
+import { parseBooleanQueryParam } from "@/lib/params";
 import prisma from "@/lib/prisma";
 
-import type { TranslationEntryPair } from "../types/translation";
+import type { KeyFilter, TranslationEntryPair } from "../types/translation";
 import { requireProjectMember } from "../utils/requireProjectMember";
 
 type GetTranslationEntryPairsArgs = {
   projectId: string;
   sourceLanguage: string;
   targetLanguage: string;
+  filter: KeyFilter;
 };
 
 export const getTranslationEntryPairs = async ({
   projectId,
   sourceLanguage,
   targetLanguage,
+  filter,
 }: GetTranslationEntryPairsArgs) => {
   const project = await requireProjectMember({
     projectId,
@@ -32,18 +35,43 @@ export const getTranslationEntryPairs = async ({
     throw new Error("Invalid language pair");
   }
 
-  const sourceEntries = await prisma.translationEntry.findMany({
+  const targetEntries = await prisma.translationEntry.findMany({
     where: {
-      translationId: sourceTranslation.id,
+      AND: [
+        { translationId: targetTranslation.id },
+        {
+          ...(filter.query && {
+            key: {
+              contains: filter.query,
+              mode: "insensitive",
+            },
+          }),
+        },
+        {
+          ...(parseBooleanQueryParam(filter.emptyOnly) && {
+            value: null,
+          }),
+        },
+        {
+          ...(filter.group && {
+            key: {
+              startsWith: filter.group,
+            },
+          }),
+        },
+      ],
     },
     orderBy: {
       key: "asc",
     },
   });
 
-  const targetEntries = await prisma.translationEntry.findMany({
+  const sourceEntries = await prisma.translationEntry.findMany({
     where: {
-      translationId: targetTranslation.id,
+      translationId: sourceTranslation.id,
+      key: {
+        in: targetEntries.map((entry) => entry.key),
+      },
     },
     orderBy: {
       key: "asc",
