@@ -6,15 +6,15 @@ import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
-const Homepage = () => {
+const ThirdPage = () => {
   const router = useRouter();
   const { t } = useTranslation('common');
 
   return (
     <>
       <Header />
-      <main className="container pt-10 mx-auto">
-        <h1 className="text-3xl">{t('title')}</h1>
+      <main>
+        <h1>{t('title')}</h1>
         <hr />
         <div>
           <p>
@@ -37,4 +37,4 @@ export const getStaticProps: GetStaticProps = async ({ locale }) => ({
   },
 });
 
-export default Homepage;
+export default ThirdPage;
