@@ -4,7 +4,6 @@ import type { GetStaticProps } from 'next';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import Header from '@/components/Header';
-import Footer from '@/components/Footer';
 
 const ThirdPage = () => {
   const router = useRouter();
@@ -20,7 +19,6 @@ const ThirdPage = () => {
           <div className="flex-col space-y-3"></div>
         </article>
       </main>
-      <Footer />
     </>
   );
 };
