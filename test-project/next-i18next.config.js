@@ -26,7 +26,7 @@ module.exports = {
     backendOptions: [
       {},
       {
-        projectId: 'asd',
+        projectId: process.env.I18NEXT_PROJECT_ID,
         reloadInterval: 5_000,
       },
     ],
