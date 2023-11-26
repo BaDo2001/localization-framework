@@ -12,28 +12,34 @@ const getDefaults = () => ({
 
 class Backend {
   init(services, backendOptions = {}, i18nextOptions = {}) {
-    this.baseUrl = 'http://localhost:3001/{{projectId}}/{{ln}}/{{ns}}.json';
+    this.baseUrl =
+      'https://localization-framework.vercel.app/api/projects/translations/{{ln}}';
     this.services = services;
     this.options = { ...getDefaults(), ...backendOptions };
+    this.options.requestOptions.headers = new Headers({
+      Authorization: 'Bearer ' + backendOptions.projectId,
+      'Content-Type': 'application/json',
+    });
     this.allOptions = i18nextOptions;
     if (this.services && this.options.reloadInterval) {
       setInterval(() => this.reload(), this.options.reloadInterval);
     }
-    this.url = this.baseUrl.replace('{{projectId}}', backendOptions.projectId);
   }
 
   read(language, namespace, callback) {
-    let fetchUrl = this.url
-      .replace('{{ln}}', language)
-      .replace('{{ns}}', namespace);
+    let fetchUrl = this.baseUrl.replace('{{ln}}', language);
 
-    fetch(fetchUrl, this.requestOptions)
+    fetch(fetchUrl, this.options.requestOptions)
       .then(async (x) => {
         if (x.status >= 400) {
           throw new FetchError(x.status, x.statusText);
         }
         let json = await x.json();
-        callback(null, json);
+        if (json.error) {
+          throw new FetchError(401, json.error);
+        }
+        let result = json.translations[namespace] ?? {};
+        callback(null, result);
       })
       .catch((e) => {
         callback(e, null);
