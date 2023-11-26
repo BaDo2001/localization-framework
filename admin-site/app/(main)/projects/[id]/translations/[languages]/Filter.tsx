@@ -7,6 +7,7 @@ import { FiFilter } from "react-icons/fi";
 
 import clsx from "clsx";
 import { usePathname, useRouter } from "next/navigation";
+import { useDebounce } from "usehooks-ts";
 
 import { useToggle } from "@/hooks/useToggle";
 import type { KeyFilter } from "@/lib/params";
@@ -24,16 +25,17 @@ const Filter = ({ initialValues }: Props) => {
 
   const [query, setQuery] = useState(initialValues.query ?? "");
   const [emptyOnly, setEmptyOnly] = useState(initialValues.emptyOnly);
+  const debouncedQuery = useDebounce(query, 200);
 
   useEffect(() => {
     const queryString = getQueryString({
-      query,
+      query: debouncedQuery,
       emptyOnly,
       group: initialValues.group,
     });
 
     router.push(`${pathname}?${queryString}`);
-  }, [emptyOnly, initialValues.group, pathname, query, router]);
+  }, [emptyOnly, initialValues.group, pathname, debouncedQuery, router]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) =>
     setQuery(e.target.value);

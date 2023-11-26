@@ -52,7 +52,10 @@ const TranslationPage = async ({ params, searchParams }: Props) => {
     projectId,
     sourceLanguage: source,
     targetLanguage: target,
-    filter: searchParams,
+    filter: {
+      ...searchParams,
+      emptyOnly: parseBooleanQueryParam(searchParams.emptyOnly),
+    },
   });
 
   return (

@@ -1,7 +1,7 @@
-import { parseBooleanQueryParam } from "@/lib/params";
+import type { KeyFilter } from "@/lib/params";
 import prisma from "@/lib/prisma";
 
-import type { KeyFilter, TranslationEntryPair } from "../types/translation";
+import type { TranslationEntryPair } from "../types/translation";
 import { requireProjectMember } from "../utils/requireProjectMember";
 
 type GetTranslationEntryPairsArgs = {
@@ -48,7 +48,7 @@ export const getTranslationEntryPairs = async ({
           }),
         },
         {
-          ...(parseBooleanQueryParam(filter.emptyOnly) && {
+          ...(filter.emptyOnly && {
             value: null,
           }),
         },
