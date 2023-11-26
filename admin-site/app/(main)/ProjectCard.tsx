@@ -14,7 +14,9 @@ const ProjectCard: FC<Props> = ({ project }) => {
   const router = useRouter();
 
   const onClick = () => {
-    router.push(`/projects/${project.id}`);
+    router.push(
+      `/projects/${project.id}/translations/${project.defaultLanguage}-${project.defaultLanguage}`,
+    );
   };
 
   const onSettingsClick = (e: React.MouseEvent) => {
