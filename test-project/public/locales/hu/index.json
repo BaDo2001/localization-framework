@@ -1,0 +1,8 @@
+{
+  "title": "Főoldal",
+  "item": "tétel",
+  "item_one": "tétel",
+  "item_other": "tételek",
+  "itemWithCount_one": "{{count}} tétel",
+  "itemWithCount_other": "{{count}} tétel"
+}
