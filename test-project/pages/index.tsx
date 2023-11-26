@@ -1,10 +1,10 @@
-import Link from "next/link";
-import { useRouter } from "next/router";
-import type { GetStaticProps, InferGetStaticPropsType } from "next";
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import type { GetStaticProps, InferGetStaticPropsType } from 'next';
 
-import { useTranslation } from "next-i18next";
-import { serverSideTranslations } from "next-i18next/serverSideTranslations";
-import nextI18NextConfig from "../next-i18next.config.js";
+import { useTranslation } from 'next-i18next';
+import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
+import nextI18NextConfig from '../next-i18next.config.js';
 
 type Props = {
   // Add custom props here
@@ -12,7 +12,7 @@ type Props = {
 
 const Homepage = (props: Props) => {
   const router = useRouter();
-  const { t, i18n } = useTranslation("common");
+  const { t, i18n } = useTranslation('common');
 
   const onToggleLanguageClick = (newLocale: string) => {
     const { pathname, asPath, query } = router;
@@ -23,24 +23,24 @@ const Homepage = (props: Props) => {
     i18n.changeLanguage(newLocale);
   };
 
-  const changeTo = router.locale === "en" ? "hu" : "en";
+  const changeTo = router.locale === 'en' ? 'hu' : 'en';
   // const changeTo = i18n.resolvedLanguage === 'en' ? 'hu' : 'en'
 
   return (
     <>
       <main>
-        <h1>{t("title")}</h1>
+        <h1>{t('title')}</h1>
         <hr />
         <div>
           <p>
-            {t("username")} <input type="text" name="username" id="username" />
+            {t('username')} <input type="text" name="username" id="username" />
           </p>
           <p>
-            {t("password")}{" "}
+            {t('password')}{' '}
             <input type="password" name="password" id="password" />
           </p>
           <Link href="/" locale={changeTo}>
-            <button>{t("changeLanguage", { changeTo })}</button>
+            <button>{t('changeLanguage', { changeTo })}</button>
           </Link>
         </div>
       </main>
@@ -52,8 +52,8 @@ const Homepage = (props: Props) => {
 export const getStaticProps: GetStaticProps<Props> = async ({ locale }) => ({
   props: {
     ...(await serverSideTranslations(
-      locale ?? "en",
-      ["common"],
+      locale ?? 'en',
+      ['common'],
       nextI18NextConfig
     )),
   },

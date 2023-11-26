@@ -1,1 +1,2 @@
-module.exports = require("./lib/TranslationSDK");
+let backend = require('./lib/TranslationBackend');
+module.exports = backend;
