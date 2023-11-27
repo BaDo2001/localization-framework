@@ -7,9 +7,8 @@ import { FiFilter } from "react-icons/fi";
 
 import clsx from "clsx";
 import { usePathname, useRouter } from "next/navigation";
-import { useDebounce } from "usehooks-ts";
+import { useDebounce, useToggle } from "usehooks-ts";
 
-import { useToggle } from "@/hooks/useToggle";
 import type { KeyFilter } from "@/lib/params";
 import { getQueryString } from "@/lib/params";
 
@@ -18,7 +17,7 @@ type Props = {
 };
 
 const Filter = ({ initialValues }: Props) => {
-  const { isOn: isFilterOpen, toggle: toggleFilter } = useToggle();
+  const [isFilterOpen, toggleFilter] = useToggle();
 
   const router = useRouter();
   const pathname = usePathname();
@@ -58,17 +57,16 @@ const Filter = ({ initialValues }: Props) => {
         type="button"
         className={clsx(
           isFilterOpen && "btn-primary",
-          "btn btn-circle w-8 h-8 min-h-0 self-end",
+          "btn btn-md btn-circle self-end",
         )}
         onClick={toggleFilter}
       >
-        <FiFilter />
+        <FiFilter className="w-5 h-5" />
       </button>
 
       <div
         className={clsx(
           isFilterOpen ? "max-h-24 pt-2" : "max-h-0",
-
           "flex flex-col overflow-y-hidden px-1 transition-all duration-200",
         )}
       >
