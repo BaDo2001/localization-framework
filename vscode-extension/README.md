@@ -21,6 +21,7 @@ Set the backend server where the project api is available.
  - Api key
 
 Set the api key which is generated for the given project in the settings (admin site).
+**Always keep it secret!**
 
 ![Choose project](/vscode-extension/docs/images/api-key.png)
 

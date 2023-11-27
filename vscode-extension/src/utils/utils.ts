@@ -72,6 +72,7 @@ export const LocalizationFrameworkUtils = {
       translationsFolder = await vscode.window.showInputBox({
         prompt: "Enter translation folder path:",
         title: "Where to store translation json files?",
+        value: "src/translations",
         placeHolder: "src/translations",
       });
 
