@@ -15,7 +15,7 @@ module.exports = {
     locales: ['en', 'hu'],
   },
   fallbackLng: 'en',
-  use: [ChainedBackend],
+  use: isBrowser ? [] : [ChainedBackend],
   partialBundledLanguages: true,
   backend: {
     reloadInterval: isBrowser ? false : 5_000,
@@ -30,7 +30,6 @@ module.exports = {
       {},
       {
         apiKey: process.env.I18NEXT_API_KEY,
-        // reloadInterval: 5_000,
       },
     ],
   },
