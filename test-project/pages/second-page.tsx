@@ -17,60 +17,7 @@ const SecondPage = () => {
           <h1 className="text-3xl font-bold">{t('secondPage:title')}</h1>
           <div className="divider divider-neutral"></div>
           <div className="flex-col space-y-3">
-            <div></div>
-
-            <div className="overflow-x-auto">
-              <table className="table table-zebra">
-                <thead>
-                  <tr>
-                    <th>{t('common:code')}</th>
-                    <th>{t('common:result')}</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      {"t('secondPage:place', { count: 1, ordinal: true })"}
-                    </td>
-                    <td>
-                      {t('secondPage:place', { count: 1, ordinal: true })}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      {"t('secondPage:place', { count: 21, ordinal: true })"}
-                    </td>
-                    <td>
-                      {t('secondPage:place', { count: 21, ordinal: true })}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      {"t('secondPage:place', { count: 2, ordinal: true })"}
-                    </td>
-                    <td>
-                      {t('secondPage:place', { count: 2, ordinal: true })}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      {"t('secondPage:place', { count: 11, ordinal: true })"}
-                    </td>
-                    <td>
-                      {t('secondPage:place', { count: 11, ordinal: true })}
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>
-                      {"t('secondPage:place', { count: 32, ordinal: true })"}
-                    </td>
-                    <td>
-                      {t('secondPage:place', { count: 32, ordinal: true })}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+            <div className="overflow-x-auto"></div>
           </div>
         </article>
       </main>
