@@ -10,7 +10,12 @@ type Props = {
 const KeyTreeView = async ({ projectId }: Props) => {
   const defaultTranslation = await getDefaultTranslation(projectId);
 
-  return <Tree {...formatKeys(defaultTranslation)} />;
+  return (
+    <div>
+      <h2 className="font-semibold mb-4">Keys added to the project</h2>
+      <Tree {...formatKeys(defaultTranslation)} />
+    </div>
+  );
 };
 
 export default KeyTreeView;

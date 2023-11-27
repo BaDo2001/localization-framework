@@ -62,7 +62,7 @@ const TranslationPage = async ({ params, searchParams }: Props) => {
   return (
     <div>
       <div className="flex justify-between items-center mb-16">
-        <h1 className="text-xl">{project.name}</h1>
+        <h1 className="text-xl font-bold">{project.name}</h1>
 
         <AddKeyButton project={project} />
       </div>
