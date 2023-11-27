@@ -7,6 +7,8 @@ import { FaUndo } from "react-icons/fa";
 import { saveTranslation } from "@/app/api/keys/saveTranslation";
 import type { TranslationEntryPair } from "@/app/api/types/translation";
 
+import UnusedVariableIndicator from "./UnusedVariableIndicator";
+
 type Props = {
   pair: TranslationEntryPair;
   readonly: boolean;
@@ -57,7 +59,14 @@ const TranslationEntryPairEditor = ({
 
   return (
     <div>
-      <h3 className="mb-2 font-semibold">{sourceEntry.key}</h3>
+      <h3 className="flex items-center gap-x-2 mb-2 font-semibold">
+        {sourceEntry.key}
+
+        <UnusedVariableIndicator
+          sourceValue={sourceEntry.value}
+          targetValue={targetEntry.value}
+        />
+      </h3>
 
       <div className="grid grid-cols-2 bg-base-100 border border-zinc-300 shadow-sm rounded-lg divide-x-2">
         <div className="p-4 break-words">{sourceEntry.value}</div>
