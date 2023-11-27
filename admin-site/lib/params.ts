@@ -27,9 +27,9 @@ export const parseBooleanQueryParam = (param: string | null | undefined) =>
   param === "true";
 
 export type KeyFilter = {
-  query?: string;
-  emptyOnly?: boolean;
-  group?: string;
+  query?: string | null;
+  emptyOnly?: boolean | null;
+  group?: string | null;
 };
 
 export const getQueryString = ({ query, emptyOnly, group }: KeyFilter) => {

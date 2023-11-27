@@ -9,7 +9,7 @@ const Projects = async () => {
   return (
     <div>
       <div className="flex justify-between items-center">
-        <h1 className="text-xl">My projects</h1>
+        <h1 className="text-xl font-bold">My projects</h1>
 
         <CreateProjectButton />
       </div>

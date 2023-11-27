@@ -6,6 +6,7 @@ import { parseBooleanQueryParam, parseLanguageParams } from "@/lib/params";
 
 import AddKeyButton from "./add-key/AddKeyButton";
 import TranslationEditor from "./editor/TranslationEditor";
+import KeyTreeView from "./key-tree/KeyTreeView";
 import Filter from "./Filter";
 import LanguagePairSelector from "./LanguagePairSelector";
 
@@ -61,28 +62,32 @@ const TranslationPage = async ({ params, searchParams }: Props) => {
   return (
     <div>
       <div className="flex justify-between items-center mb-16">
-        <h1 className="text-xl">{project.name}</h1>
+        <h1 className="text-xl font-bold">{project.name}</h1>
 
         <AddKeyButton project={project} />
       </div>
 
-      <div className="flex flex-col w-2/3 mx-auto">
-        <LanguagePairSelector
-          project={project}
-          defaultSourceLanguage={source}
-          defaultTargetLanguage={target}
-        />
+      <div className="flex">
+        <KeyTreeView projectId={projectId} />
 
-        <div className="mt-10">
-          <Filter
-            initialValues={{
-              ...searchParams,
-              emptyOnly: parseBooleanQueryParam(searchParams.emptyOnly),
-            }}
+        <div className="flex flex-col w-2/3 mx-auto">
+          <LanguagePairSelector
+            project={project}
+            defaultSourceLanguage={source}
+            defaultTargetLanguage={target}
           />
-        </div>
 
-        <TranslationEditor pairs={pairs} />
+          <div className="mt-10">
+            <Filter
+              initialValues={{
+                ...searchParams,
+                emptyOnly: parseBooleanQueryParam(searchParams.emptyOnly),
+              }}
+            />
+          </div>
+
+          <TranslationEditor pairs={pairs} />
+        </div>
       </div>
     </div>
   );
