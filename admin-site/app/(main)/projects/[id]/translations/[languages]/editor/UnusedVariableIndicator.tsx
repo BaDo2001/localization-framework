@@ -1,6 +1,6 @@
 import { MdWarning } from "react-icons/md";
 
-import Tooltip from "@/components/Tooltip";
+import Tooltip from "@/components/tooltip";
 import {
   getUnusedVariableNames,
   getUnusedVariables,
