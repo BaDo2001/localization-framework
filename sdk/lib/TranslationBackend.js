@@ -17,7 +17,7 @@ class Backend {
     this.services = services;
     this.options = { ...getDefaults(), ...backendOptions };
     this.options.requestOptions.headers = new Headers({
-      Authorization: 'Bearer ' + backendOptions.projectId,
+      Authorization: 'Bearer ' + backendOptions.apiKey ?? '',
       'Content-Type': 'application/json',
     });
     this.allOptions = i18nextOptions;

@@ -29,7 +29,7 @@ module.exports = {
     backendOptions: [
       {},
       {
-        projectId: process.env.I18NEXT_PROJECT_ID,
+        apiKey: process.env.I18NEXT_API_KEY,
         // reloadInterval: 5_000,
       },
     ],
