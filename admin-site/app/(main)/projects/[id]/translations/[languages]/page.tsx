@@ -86,7 +86,7 @@ const TranslationPage = async ({ params, searchParams }: Props) => {
             />
           </div>
 
-          <TranslationEditor pairs={pairs} />
+          <TranslationEditor project={project} pairs={pairs} />
         </div>
       </div>
     </div>

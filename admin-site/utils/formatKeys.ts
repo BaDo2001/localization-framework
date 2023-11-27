@@ -1,6 +1,7 @@
 import _ from "lodash";
 
 import type { TranslationWithEntries } from "@/app/api/types/translation";
+import { isPluralKey } from "@/lib/plurals";
 
 import { createNestedKeys } from "./createNestedKeys";
 
@@ -12,6 +13,10 @@ export type KeyEntry = {
 export const formatKeys = (translation: TranslationWithEntries) =>
   translation.translationEntries.reduce(
     (acc, entry) => {
+      if (isPluralKey(entry.key)) {
+        return acc;
+      }
+
       if (!entry.key.includes(".")) {
         return {
           ...acc,
