@@ -35,9 +35,6 @@ class Backend {
           throw new FetchError(x.status, x.statusText);
         }
         let json = await x.json();
-        if (json.error) {
-          throw new FetchError(401, json.error);
-        }
         let result = json.translations[namespace] ?? {};
         callback(null, result);
       })
