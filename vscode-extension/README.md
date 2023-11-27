@@ -2,9 +2,26 @@
 
 This extension helps you quickly add new localization keys and keeps the keys in sync for the given project.
 
+## Installation
+
+```bash
+# Install cli tool
+npm install -g @vscode/vsce
+
+# Navigate to extension root folder
+
+# Create package
+vsce package
+
+# Install in vscode
+code --install-extension my-extension-0.0.1.vsix
+```
+
 ## Features
 
 ### Commands
+
+Press `Ctrl+Shift+P` to open the command palette and start typing `Localization Framework`, this will bring up the two command available to use. You can bind these commands to any keys to like for easier use.
 
 ### First time settings prompts
 
