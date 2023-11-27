@@ -4,13 +4,20 @@ import { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { FaUndo } from "react-icons/fa";
 
+import type { Project } from "@prisma/client";
+
 import { saveTranslation } from "@/app/api/keys/saveTranslation";
 import type { TranslationEntryPair } from "@/app/api/types/translation";
+import type { Plural } from "@/lib/plurals";
+import { isPluralKey, plurals } from "@/lib/plurals";
 
+import PluralSelectorButton from "./plural-selector/PluralSelectorButton";
 import UnusedVariableIndicator from "./UnusedVariableIndicator";
 
 type Props = {
+  project: Project;
   pair: TranslationEntryPair;
+  pluralVersions: Plural[];
   readonly: boolean;
 };
 
@@ -19,7 +26,9 @@ type Form = {
 };
 
 const TranslationEntryPairEditor = ({
+  project,
   pair: { sourceEntry, targetEntry },
+  pluralVersions,
   readonly,
 }: Props) => {
   const {
@@ -61,6 +70,15 @@ const TranslationEntryPairEditor = ({
     <div>
       <h3 className="flex items-center gap-x-2 mb-2 font-semibold">
         {sourceEntry.key}
+
+        {!isPluralKey(sourceEntry.key) &&
+          pluralVersions.length < plurals.length && (
+            <PluralSelectorButton
+              project={project}
+              translationKey={sourceEntry.key}
+              pluralVersions={pluralVersions}
+            />
+          )}
 
         <UnusedVariableIndicator
           sourceValue={sourceEntry.value}
