@@ -1,9 +1,12 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 
+import type { ProjectIncludes } from "@/api/types/project";
 import prisma from "@/lib/prisma";
 
-export const getAllProjects = async () => {
+export const getAllProjects = async <T extends boolean>(
+  includeTranslations: T,
+): Promise<ProjectIncludes<false, T>[]> => {
   const { userId } = auth();
 
   if (!userId) {
@@ -25,7 +28,12 @@ export const getAllProjects = async () => {
         },
       ],
     },
+    include: {
+      ...(includeTranslations && {
+        translations: true,
+      }),
+    },
   });
 
-  return projects;
+  return projects as ProjectIncludes<false, T>[];
 };
