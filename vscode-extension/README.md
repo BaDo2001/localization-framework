@@ -16,45 +16,45 @@ These settings can be changed anytime in the .vscode/settings.json file in the r
 
 Set the backend server where the project api is available.
 
-![Set backend base url](/docs/images/settings-backend.png)
+![Set backend base url](/vscode-extension/docs/images/settings-backend.png)
 
- - Project
+ - Api key
 
-There can be multiple projects on this server. Choose the project to be associated with this folder/repository.
+Set the api key which is generated for the given project in the settings (admin site).
 
-![Choose project](/docs/images/settings-project.png)
+![Choose project](/vscode-extension/docs/images/api-key.png)
 
  - Translations folder
 
 Choose the folder in the current repository where the translations json files will be downloaded and kept in sync.
 
-![Choose translations folder](/docs/images/settings-folder.png)
+![Choose translations folder](/vscode-extension/docs/images/settings-folder.png)
 
 ### Localization Framework: Add Translation
 
 Type the localization you want to add to the project:
 
-![Adding new localization key](/docs/images/add-key.png)
+![Adding new localization key](/vscode-extension/docs/images/add-key.png)
 
 Add the project native language translation for the key:
 
-![Adding default translation](/docs/images/add-native.png)
+![Adding default translation](/vscode-extension/docs/images/add-native.png)
 
 If the key is not already taken you get a message for a successful addition:
 
-![Successful addition](/docs/images/add-success.png)
+![Successful addition](/vscode-extension/docs/images/add-success.png)
 
 ### Localization Framework: Synchronize Project Translations
 
 If all the settings are set, it will download all the latest translation keys and saves them to the given translation folder. On success gives the following message:
 
-![Successful sync](/docs/images/sync-ok.png)
+![Successful sync](/vscode-extension/docs/images/sync-ok.png)
 
 ### Prompts
 
 Both commands operate with text inputs. Anytime the user presses Esc or clicks away the prompt and the command will get canceled and displays the following warning message:
 
-![Cancel warning](/docs/images/cancel.png)
+![Cancel warning](/vscode-extension/docs/images/cancel.png)
 
 ## Requirements
 
